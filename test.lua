@@ -1,4 +1,4 @@
-Class = require "Class"
+Class = require "lib.Class"
 
 local Animal = Class:derive("Animal")
 
@@ -22,4 +22,4 @@ print(c:get_type())
 
 local Minx = Cat:derive("Minx")
 local m = Minx()
-print(m:get_type(), m.super:get_type(), m.super.super:get_type())
+print(m:is_type("Animal"))

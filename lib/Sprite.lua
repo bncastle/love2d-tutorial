@@ -1,13 +1,16 @@
-local class = require("class")
-local Sprite = class:derive("Sprite")
-local Anim = require("Animation")
-local Vector2 = require("Vector2")
+-- local class = require("lib.Class")
+local Anim = require("lib.Animation")
+local Vector2 = require("lib.Vector2")
+
+local Entity = require("lib.Entity")
+
+local Sprite = Entity:derive("Sprite")
 
 function Sprite:new(atlas, w, h, x, y, sx, sy, angle)
+    self.super:new(x,y)
     self.w = w
     self.h = h
     self.flip = Vector2(1,1)
-    self.pos = Vector2(x or 0, y or 0)
     self.scale = Vector2(sx or 1, sy or 1)
     self.atlas = atlas
     self.animations = {}

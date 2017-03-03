@@ -1,4 +1,4 @@
-local class = require("Class")
+local class = require("lib.Class")
 
 local Events = class:derive("Events")
 
@@ -64,7 +64,7 @@ function Events:clear(evt_type)
 end
 
 function Events:invoke(evt_type, ...)
-    if self.handlers[evt_type] == nil then return end
+    if self.handlers[type] == nil then return end
     -- assert(self.handlers[evt_type] ~= nil, "Event of type " .. evt_type .. " does not exist!")
     local tbl = self.handlers[evt_type]
     for i = 1, #tbl do

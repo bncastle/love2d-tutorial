@@ -1,7 +1,7 @@
-local Anim = require("Animation")
-local Sprite = require("Sprite")
-local Key = require("Keyboard")
-local Evt = require("Events")
+local Anim = require("lib.Animation")
+local Sprite = require("lib.Sprite")
+local Key = require("lib.Keyboard")
+local Evt = require("lib.Events")
 
 local hero_atlas
 
@@ -17,7 +17,7 @@ function love.load()
     Key:hook_love_events()
     love.graphics.setDefaultFilter('nearest', 'nearest')
     hero_atlas = love.graphics.newImage("assets/gfx/hero.png")
-    spr = Sprite(hero_atlas, 16,16, 100,100, 10, 10)
+    spr = Sprite(hero_atlas, 16,16, 200,100, 10, 10)
     spr:add_animation("walk", walk)
     spr:add_animation("swim", swim)
     spr:add_animation("punch", punch)
