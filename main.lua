@@ -1,17 +1,8 @@
 local Anim = require("Animation")
 local Sprite = require("Sprite")
+local Key = require("Keyboard")
 
 local hero_atlas
-
-local angle = 0
-
---animation parameters-
-local fps = 12
-local anim_timer = 1 / fps
-local frame = 1
-local num_frames = 6
-local xoffset
------------------------
 
 local spr
 local idle = Anim(16, 16, 16, 16, 4, 4, 6 )
@@ -21,6 +12,7 @@ local punch = Anim(16, 80, 16, 16, 3, 3, 10, false)
 local snd
 
 function love.load()
+    Key:hook_love_events()
     love.graphics.setDefaultFilter('nearest', 'nearest')
     hero_atlas = love.graphics.newImage("assets/gfx/hero.png")
     spr = Sprite(hero_atlas, 16,16, 100,100, 10, 10)
@@ -36,32 +28,22 @@ end
 function love.update(dt)
     if dt > 0.035 then return end
 
+    if Key:key_down("space") and spr.current_anim ~= "punch" then
+        spr:animate("punch")
+        love.audio.stop(snd)
+        love.audio.play(snd)
+    elseif Key:key_down("escape") then
+        love.event.quit()
+    end   
     if spr.current_anim == "punch" and spr:animation_finished() then
         spr:animate("idle")
     end
 
+    Key:update(dt)
     spr:update(dt)
-
 end
 
 function love.draw()
     love.graphics.clear(64,64,255)
     spr:draw()
 end
-
-function love.keypressed(key, scancode, isrepeat)
-    if key == "space" and spr.current_anim ~= "punch" then
-        spr:animate("punch")
-        love.audio.stop(snd)
-        love.audio.play(snd)
-    elseif key == "a" then
-        spr:flip_h(true)
-    elseif key == "d" then
-        spr:flip_h(false)
-    elseif key == "w" then
-        spr:flip_v(true)
-    elseif key == "s" then
-        spr:flip_v(false)
-    end
-end
-
