@@ -28,7 +28,7 @@ function love.load()
     spr:add_animation("swim", swim)
     spr:add_animation("punch", punch)
     spr:add_animation("idle", idle)
-    spr:animate("idle")
+    spr:animate("walk")
 
     snd = love.audio.newSource("assets/sfx/hit01.wav", "static")
 end
@@ -54,6 +54,14 @@ function love.keypressed(key, scancode, isrepeat)
         spr:animate("punch")
         love.audio.stop(snd)
         love.audio.play(snd)
+    elseif key == "a" then
+        spr:flip_h(true)
+    elseif key == "d" then
+        spr:flip_h(false)
+    elseif key == "w" then
+        spr:flip_v(true)
+    elseif key == "s" then
+        spr:flip_v(false)
     end
 end
 
