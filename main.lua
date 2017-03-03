@@ -1,23 +1,21 @@
 
-local x = 120
-local dir = 1
+local hero_atlas
+local hero_sprite
+
+local angle = 0
 
 function love.load(arg)
-
+    love.graphics.setDefaultFilter('nearest', 'nearest')
+    hero_atlas = love.graphics.newImage("assets/gfx/hero.png")
+    hero_sprite = love.graphics.newQuad(32, 16, 16, 16, hero_atlas:getDimensions())
 end
 
 function love.update(dt)
-    if x > 400 or x < 120 then
-        di r = dir * -1
-    end
-
-    x = x + dir * 200 * dt
+    if dt > 0.035 then return end
+    angle = angle + 27.5 * dt
 end
 
 
 function love.draw()
-    love.graphics.setColor(255,255,255)
-    love.graphics.print("Hi there peoplez", 10, 100)
-    love.graphics.setColor(128,64,255)
-    love.graphics.rectangle("fill", x, 100, 100, 50)
+    love.graphics.draw(hero_atlas, hero_sprite,320, 180, math.rad(angle), 4, 4, 8, 8)
 end
