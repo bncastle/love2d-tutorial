@@ -47,8 +47,11 @@ function Sprite:animation_finished()
     return true
 end
 
-function Sprite:add_animation(name, anim)
-    self.animations[name] = anim
+function Sprite:add_animations(animations)
+    assert(type(animations) == "table", "animations parameter must be a table!")
+    for k,v in pairs(animations) do
+        self.animations[k] = v
+    end
 end
 
 function Sprite:update(dt)
