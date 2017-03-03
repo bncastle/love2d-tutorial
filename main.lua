@@ -1,7 +1,7 @@
 local Anim = require("Animation")
+local Sprite = require("Sprite")
 
 local hero_atlas
-local hero_sprite
 
 local angle = 0
 
@@ -13,19 +13,24 @@ local num_frames = 6
 local xoffset
 -----------------------
 
-local a = Anim(16, 32, 16, 16, 6, 6, 12)
+local spr 
+local walk = Anim(16, 32, 16, 16, 6, 6, 12)
+local swim = Anim(16, 64, 16, 16, 6, 6, 12)
 
 function love.load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
     hero_atlas = love.graphics.newImage("assets/gfx/hero.png")
-    hero_sprite = love.graphics.newQuad(16, 32, 16, 16, hero_atlas:getDimensions())
-
+    spr = Sprite(hero_atlas, 16,16,100,100, 10, 10)
+    spr:add_animation("walk", walk)
+    spr:add_animation("swim", swim)
+    spr:animate("walk")
+    spr:animate("swim")
 end
 
 function love.update(dt)
     if dt > 0.035 then return end
 
-    a:update(dt, hero_sprite)
+    spr:update(dt)
     -- a:update(dt, hero_sprite)
     -- anim_timer = anim_timer - dt
     -- if anim_timer <= 0 then
@@ -39,5 +44,6 @@ end
 
 function love.draw()
     love.graphics.clear(64,64,255)
-    love.graphics.draw(hero_atlas, hero_sprite, 320, 180, math.rad(angle), 10, 10, 8, 8)
+    -- love.graphics.draw(hero_atlas, 25, 25, 0, 1, 1)
+    spr:draw()
 end

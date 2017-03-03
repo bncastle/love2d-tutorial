@@ -32,7 +32,7 @@ function Anim:update(dt, quad)
         if self.frame > self.num_frames then 
             self.frame = 1 
         end
-        self.offset.x = self.start_offset.x + (self.size.x * ((self.frame - 1) % (self.num_frames -1)))
+        self.offset.x = self.start_offset.x + (self.size.x * ((self.frame - 1) % (self.column_size)))
         self.offset.y = self.start_offset.y + (self.size.y * math.floor((self.frame - 1) / self.column_size))
         -- print( self.frame .. " " .. self.offset.x .. " " .. self.offset.y)
         self:set(quad)
