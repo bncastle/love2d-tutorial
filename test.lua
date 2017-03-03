@@ -1,6 +1,7 @@
-Class = require "lib.Class"
+Class = require "Class"
 
 local Animal = Class:derive("Animal")
+local Human = Class:derive("Human")
 
 function Animal:SoundOff()
     print("uh?")
@@ -22,4 +23,5 @@ print(c:get_type())
 
 local Minx = Cat:derive("Minx")
 local m = Minx()
-print(m:is_type("Animal"))
+-- print(m:is(Human))
+print(m:is_type("Minx"))
