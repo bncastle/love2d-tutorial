@@ -1,3 +1,7 @@
 CC0 graphics
 ========
 hero.png: http://opengameart.org/content/classic-hero
+
+CC0 Sounds
+=====
+hit01.wav: http://opengameart.org/content/37-hitspunches

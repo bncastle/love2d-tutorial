@@ -1,3 +1,7 @@
+--[[
+This module gives us some class-like functionality
+]]
+
 local Class = {}
 Class.__index = Class
 
