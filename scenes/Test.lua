@@ -17,7 +17,7 @@ function T:new(scene_mgr)
     self.super:new(scene_mgr)
 
     hero_atlas = love.graphics.newImage("assets/gfx/hero.png")
-    spr = Sprite(hero_atlas, 16,16, 100,100, 10, 10)
+    spr = Sprite(hero_atlas,100,100, 16, 16, 10, 10)
     spr:add_animations({idle = idle, walk = walk, swim = swim, punch = punch})
     spr:animate("swim")
 
@@ -33,17 +33,17 @@ function T:enter()
 end
 
 function T:update(dt)
-    -- if Key:key_down("space") or spr.current_anim ~= "punch" then
-    --     spr:animate("punch")
-    --     love.audio.stop(snd)
-    --     love.audio.play(snd)
-    -- elseif Key:key_down("escape") then
-    --     love.event.quit()
-    -- end   
+    if Key:key_down("space") and spr.current_anim ~= "punch" then
+        spr:animate("punch")
+        love.audio.stop(snd)
+        love.audio.play(snd)
+    elseif Key:key_down("escape") then
+        love.event.quit()
+    end   
 
-    -- if spr.current_anim == "punch" and spr:animation_finished() then
-    --     spr:animate("idle")
-    -- end
+    if spr.current_anim == "punch" and spr:animation_finished() then
+        spr:animate("idle")
+    end
     spr:update(dt)
 
 end
