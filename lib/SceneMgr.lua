@@ -1,5 +1,6 @@
 local Class = require("lib.Class")
 local Scene = require("lib.Scene")
+
 local SM = Class:derive("SceneMgr")
 
 function SM:new(scene_dir, scenes)
@@ -37,6 +38,7 @@ function SM:add(scene, scene_name)
     end
 end
 
+--removes a scene from our list
 function SM:remove(scene_name)
     if scene_name then
         for k,v in pairs(self.scenes) do
