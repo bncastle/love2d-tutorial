@@ -1,6 +1,7 @@
 Key = require("lib.Keyboard")
 local GPM = require("lib.GamepadMgr")
 local SM = require("lib.SceneMgr")
+local Event = require("lib.Events")
 
 local sm
 
@@ -9,9 +10,11 @@ local gpm = GPM({"assets/gamecontrollerdb.txt"})
 function love.load()
     --Love2D game settings
     love.graphics.setDefaultFilter('nearest', 'nearest')
-    local font = love.graphics.newFont("assets/Pixeled.ttf", 16)
+    local font = love.graphics.newFont("assets/SuperMario256.ttf", 20)
     --set the font to the one above
     love.graphics.setFont(font)
+
+    _G.events = Event(false)
 
     Key:hook_love_events()
 
