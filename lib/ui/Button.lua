@@ -27,9 +27,34 @@ function Button:new(x, y, w, h, label)
     self.pressed = color(255, 32, 32, 255)
     self.disabled = gray(128, 128)
 
+    --Text colors
+    self.text_normal = color(255)
+    self.text_disabled = gray(128, 255)
+
+
+    self.text_color = self.text_normal
     self.color = self.normal
     self.prev_left_click = false
     self.interactible = true
+end
+
+function Button:text_colors(normal, disabled)
+    assert(type(normal) == "table", "normal parameter must be a table!")
+    assert(type(disabled) == "table", "disabled parameter must be a table!")
+
+    self.text_normal = normal
+    self.text_disabled = disabled
+end
+
+function Button:colors(normal, highlight, pressed, disabled)
+    assert(type(normal) == "table", "normal parameter must be a table!")
+    assert(type(highlight) == "table", "highlight parameter must be a table!")
+    assert(type(pressed) == "table", "pressed parameter must be a table!")
+    --assert(type(disabled) == "table", "disabled parameter must be a table!")
+    self.normal = normal
+    self.highlight = highlight
+    self.pressed = pressed
+    self.disabled = disabled or self.disabled
 end
 
 function Button:left(x)
@@ -44,6 +69,9 @@ function Button:enable(enabled)
     self.interactible = enabled
     if not enabled then 
         self.color = self.disabled
+        self.text_color = self.text_disabled
+    else
+        self.text_color = self.text_normal
     end
 end
 
@@ -69,16 +97,21 @@ function Button:update(dt)
 end
 
 function Button:draw()
+
+    -- love.graphics.line(self.pos.x, self.pos.y - self.h / 2, self.pos.x, self.pos.y + self.h / 2)
+    -- love.graphics.line(self.pos.x - self.w / 2, self.pos.y, self.pos.x + self.w / 2, self.pos.y)
+
     local r, g, b, a = love.graphics.getColor()
     love.graphics.setColor(self.color)
     love.graphics.rectangle("fill", self.pos.x - self.w / 2, self.pos.y - self.h / 2, self.w, self.h, 4, 4)
-    love.graphics.setColor(r, g, b, a)
     
     local f = love.graphics.getFont()
-    local fw = f:getWidth(self.label)
+    local _, lines = f:getWrap(self.label, self.w)
     local fh = f:getHeight()
-    
-    love.graphics.print(self.label, self.pos.x - fw / 2, self.pos.y - fh / 2)
+
+    love.graphics.setColor(self.text_color)
+    love.graphics.printf(self.label, self.pos.x  - self.w / 2, self.pos.y - (fh /2 * #lines), self.w, "center")
+    love.graphics.setColor(r, g, b, a)
 end
 
 return Button
