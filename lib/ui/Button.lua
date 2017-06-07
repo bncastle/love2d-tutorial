@@ -15,11 +15,11 @@ local function mouse_in_bounds(self, mx, my)
     return mx >= self.pos.x - self.w / 2 and mx <= self.pos.x + self.w / 2 and my >= self.pos.y - self.h / 2 and my <= self.pos.y + self.h / 2
 end
 
-function Button:new(x, y, w, h, label)
+function Button:new(x, y, w, h, text)
     self.pos = Vector2(x or 0, y or 0)
     self.w = w
     self.h = h
-    self.label = label
+    self.text = text
     
     --Button Colors
     self.normal = color(128, 32, 32, 192)
@@ -106,11 +106,11 @@ function Button:draw()
     love.graphics.rectangle("fill", self.pos.x - self.w / 2, self.pos.y - self.h / 2, self.w, self.h, 4, 4)
     
     local f = love.graphics.getFont()
-    local _, lines = f:getWrap(self.label, self.w)
+    local _, lines = f:getWrap(self.text, self.w)
     local fh = f:getHeight()
 
     love.graphics.setColor(self.text_color)
-    love.graphics.printf(self.label, self.pos.x  - self.w / 2, self.pos.y - (fh /2 * #lines), self.w, "center")
+    love.graphics.printf(self.text, self.pos.x  - self.w / 2, self.pos.y - (fh /2 * #lines), self.w, "center")
     love.graphics.setColor(r, g, b, a)
 end
 
