@@ -1,7 +1,7 @@
 local Class = require("lib.Class")
+local EntityMgr = require("lib.EntityMgr")
 
 local Scene = Class:derive("Scene")
-local EntityMgr = require("lib.EntityMgr")
 
 --function gets called when the scene is loaded
 function Scene:new(scene_mgr) 

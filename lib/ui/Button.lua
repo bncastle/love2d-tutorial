@@ -1,15 +1,8 @@
+local U = require("lib.Utils")
 local Class = require("lib.Class")
 local Vector2 = require("lib.Vector2")
 
 local Button = Class:derive("Button")
-
-local function color(r, g, b, a)
-    return {r, g or r, b or r, a or 255}
-end
-
-local function gray(level, alpha)
-    return {level, level, level, alpha or 255}
-end
 
 local function mouse_in_bounds(self, mx, my)
     return mx >= self.pos.x - self.w / 2 and mx <= self.pos.x + self.w / 2 and my >= self.pos.y - self.h / 2 and my <= self.pos.y + self.h / 2
@@ -22,14 +15,14 @@ function Button:new(x, y, w, h, text)
     self.text = text
     
     --Button Colors
-    self.normal = color(128, 32, 32, 192)
-    self.highlight = color(192, 32, 32, 255)
-    self.pressed = color(255, 32, 32, 255)
-    self.disabled = gray(128, 128)
+    self.normal = U.color(128, 32, 32, 192)
+    self.highlight = U.color(192, 32, 32, 255)
+    self.pressed = U.color(255, 32, 32, 255)
+    self.disabled = U.gray(128, 128)
 
     --Text colors
-    self.text_normal = color(255)
-    self.text_disabled = gray(128, 255)
+    self.text_normal = U.color(255)
+    self.text_disabled = U.gray(128, 255)
 
 
     self.text_color = self.text_normal

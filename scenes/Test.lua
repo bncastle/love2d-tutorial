@@ -14,13 +14,8 @@ local punch = Anim(16, 80, 16, 16, 3, 3, 10, false)
 local snd
 
 function T:new(scene_mgr) 
-    self.super:new(scene_mgr)
-
+    T.super.new(self, scene_mgr)
     hero_atlas = love.graphics.newImage("assets/gfx/hero.png")
-    spr = Sprite(hero_atlas,100,100, 16, 16, 10, 10)
-    spr:add_animations({idle = idle, walk = walk, swim = swim, punch = punch})
-    spr:animate("swim")
-
     snd = love.audio.newSource("assets/sfx/hit01.wav", "static")
 end
 
@@ -28,11 +23,15 @@ local entered = false
 function T:enter()
     if not entered then
         entered = true
-        print("enter test")
+        spr = Sprite(hero_atlas,100,100, 16, 16, 4, 4)
+        spr:add_animations({idle = idle, walk = walk, swim = swim, punch = punch})
+        spr:animate("walk")
+        self.em:add(spr)
     end
 end
 
 function T:update(dt)
+    self.super.update(self,dt)
     if Key:key_down("space") and spr.current_anim ~= "punch" then
         spr:animate("punch")
         love.audio.stop(snd)
@@ -44,13 +43,11 @@ function T:update(dt)
     if spr.current_anim == "punch" and spr:animation_finished() then
         spr:animate("idle")
     end
-    spr:update(dt)
-
 end
 
 function T:draw()
     love.graphics.clear(64,64,255)
-    spr:draw()
+    self.super.draw(self)
 end
 
 return T
