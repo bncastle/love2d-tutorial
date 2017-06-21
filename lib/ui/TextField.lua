@@ -9,25 +9,41 @@ local TextField = Label:derive("TextField")
 function TextField:new(x, y, w, h, text, color, align)
     TextField.super.new(self, x, y, w, h, text, color, align)
     self.focus = false
+    self.focused_color = U.color(128)
+    self.unfocused_color = U.color(32)
+    self.back_color = self.unfocused_color
 
+    --TODO: Add capability to limit # of characters allowed in the input field
+    --TODO: Add "enter" key detection too
     self.key_pressed = function(key) if key == "backspace" then self:on_text_input(key) end end
     self.text_input = function(text) self:on_text_input(text) end
+end
 
-    --These need to be moved to on_enable
+function TextField:get_rect() return {x = self.pos.x, y = self.pos.y - self.h / 2, w = self.w, h = self.h} end
+
+function TextField:on_enter()
     _G.events:hook("key_pressed", self.key_pressed)
     _G.events:hook("text_input", self.text_input)
-    --TODO: on_disable
-    -- _G.events:unhook("key_pressed", self.key_pressed)
-    -- _G.events:unhook("text_input", self.text_input)
+end
+
+function TextField:on_exit()
+    _G.events:unhook("key_pressed", self.key_pressed)
+    _G.events:unhook("text_input", self.text_input)
 end
 
 function TextField:set_focus(focus)
     assert(type(focus) == 'boolean', "focus should be of type boolean")
     self.focus = focus
+    if focus then
+        self.back_color = self.focused_color
+    else
+        self.back_color = self.unfocused_color
+    end
 end
 
 function TextField:on_text_input(text)
-    -- if not self.focus or not self.enabled then return end
+    if not self.focus or not self.enabled then return end
+
     if text == "backspace" then
         -- get the byte offset to the last UTF-8 character in the string.
         local byteoffset = utf8.offset(self.text, -1)
@@ -44,7 +60,7 @@ function TextField:on_text_input(text)
 end
 
 function TextField:draw()
-    love.graphics.setColor(U.gray(32))
+    love.graphics.setColor(self.back_color)
     love.graphics.rectangle("fill", self.pos.x, self.pos.y - self.h / 2, self.w, self.h)
     TextField.super.draw(self)
 end
