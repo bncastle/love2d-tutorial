@@ -4,7 +4,7 @@ local Anim = require("lib.Animation")
 
 local Sprite = Class:derive("Sprite")
 
-function Sprite:new(atlas, x, y, w, h, sx, sy, angle)
+function Sprite:new(atlas, x, y, w, h, sx, sy, angle, color)
     self.pos = Vector2(x or 0, y or 0)
     self.w = w
     self.h = h
@@ -15,6 +15,7 @@ function Sprite:new(atlas, x, y, w, h, sx, sy, angle)
     self.current_anim = ""
     self.angle = angle or 0
     self.quad = love.graphics.newQuad(0,0, w, h, atlas:getDimensions())
+    self.tintColor = color or {255,255,255,255}
 end
 
 function Sprite:animate(anim_name)
@@ -62,6 +63,7 @@ function Sprite:update(dt)
 end
 
 function Sprite:draw()
+    love.graphics.setColor(self.tintColor)
     love.graphics.draw(self.atlas, self.quad, self.pos.x , self.pos.y, self.angle, self.scale.x * self.flip.x, self.scale.y * self.flip.y, self.w / 2, self.h / 2)   
 end
 

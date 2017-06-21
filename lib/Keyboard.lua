@@ -31,9 +31,15 @@ end
 function Keyboard:hook_love_events()
     function love.keypressed(key, scancode, isrepeat)
         key_states[key] = true
+        _G.events:invoke("key_pressed", key)
     end
     function love.keyreleased(key, scancode)
         key_states[key] = false
+        _G.events:invoke("key_released", key)
+    end
+
+    function love.textinput(text)
+        _G.events:invoke("text_input", text)
     end
 end
 

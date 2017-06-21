@@ -48,7 +48,7 @@ function GPM:new(db_files, ad_enabled)
 
     hook_love_events(self)
 
-    --it true, then the left analog joystick will be converted to
+    --if true, then the left analog joystick will be converted to
     --its corresponding dpad button output
     self.ad_enabled = ad_enabled
 
@@ -62,10 +62,14 @@ function GPM:new(db_files, ad_enabled)
     self.button_map = {}
 end
 
+--Returns true if a joystick with the given id exists
+--
 function GPM:exists(joyId)
      return self.is_connected[joyId] == nil and self.is_connected[joyId]   
 end
 
+--returns the joystick with the given id
+--
 function GPM:get_stick(joyId)
     return self.connected_sticks[joyId]
 end

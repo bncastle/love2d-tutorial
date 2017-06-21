@@ -21,6 +21,7 @@ end
 
 local entered = false
 function T:enter()
+    T.super.enter(self)
     if not entered then
         entered = true
         spr = Sprite(hero_atlas,100,100, 16, 16, 4, 4)

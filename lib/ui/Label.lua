@@ -11,7 +11,6 @@ function Label:new(x, y, w, h, text, color, align)
     self.text = text
     self.color = color or U.color(255)
     self.align = align or "center"
-
 end
 
 function Label:update(dt) end
