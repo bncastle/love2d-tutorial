@@ -22,12 +22,18 @@ function MM:new(scene_mgr)
     self.tf = TextField(love.graphics.getWidth() / 2- 50, 60, 100, 40, "hello", U.gray(196), "left")
 
     self.slider = Slider(love.graphics.getWidth() / 2 - 100 , 125, 200, 40, "volume")
+    self.vslider = Slider(20, 40 , 40, 200, "test", true)
+    self.label = Label(425, 105, 250, 40, "0", U.gray(255), "left");
+    self.vlabel = Label(12, 20, 60, 40, "0", U.gray(255), "center");
 
     self.em:add(start_button)
     self.em:add(exit_button)
     self.em:add(mmtext)
     self.em:add(self.tf)
     self.em:add(self.slider)
+    self.em:add(self.vslider)
+    self.em:add(self.label)
+    self.em:add(self.vlabel)
 
     self.click = function(btn)  self:on_click(btn) end
     self.slider_changed = function(slider) self:on_slider_changed(slider) end
@@ -47,8 +53,11 @@ function MM:exit()
 end
 
 function MM:on_slider_changed(slider)
-    -- print(slider.id)
-    -- print(slider:get_value())
+    if slider.id == "volume" then
+        self.label.text = slider:get_value()
+    elseif slider.id == "test" then
+        self.vlabel.text = slider:get_value()
+    end
 end
 
 function MM:on_click(button)
