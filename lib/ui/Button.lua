@@ -71,9 +71,9 @@ end
 function Button:update(dt)
     if not self.interactible then return end
     
-    x, y = love.mouse.getPosition()
+    local mx, my = love.mouse.getPosition()
     local left_click = love.mouse.isDown(1)
-    local in_bounds = mouse_in_bounds(self, x, y)
+    local in_bounds = mouse_in_bounds(self, mx, my)
 
     if in_bounds and not left_click then
         self.color = self.highlight

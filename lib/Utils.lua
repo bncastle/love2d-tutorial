@@ -17,4 +17,10 @@ function U.point_in_rect(point, rect)
         point.y > rect.y + rect.h)
 end
 
+--rx,ry is the upper left corner of the rectangle
+--rw,rh is the width and height of the rectangle
+function U.mouse_in_rect(mx, my, rx, ry, rw, rh)
+    return not (mx < rx or mx > rx + rw or my < ry or my > ry + rh) 
+end
+
 return U

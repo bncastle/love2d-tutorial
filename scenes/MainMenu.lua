@@ -3,6 +3,7 @@ local Button = require("lib.ui.Button")
 local Label = require("lib.ui.Label")
 local U = require("lib.Utils")
 local TextField = require("lib.ui.TextField")
+local Slider = require("lib.ui.Slider")
 
 local MM = Scene:derive("MainMenu")
 
@@ -20,23 +21,34 @@ function MM:new(scene_mgr)
 
     self.tf = TextField(love.graphics.getWidth() / 2- 50, 60, 100, 40, "hello", U.gray(196), "left")
 
+    self.slider = Slider(love.graphics.getWidth() / 2 - 100 , 125, 200, 40, "volume")
+
     self.em:add(start_button)
     self.em:add(exit_button)
     self.em:add(mmtext)
     self.em:add(self.tf)
+    self.em:add(self.slider)
 
     self.click = function(btn)  self:on_click(btn) end
+    self.slider_changed = function(slider) self:on_slider_changed(slider) end
 end
 
 local entered = false
 function MM:enter()
     MM.super.enter(self)   
     _G.events:hook("onBtnClick", self.click)
+    _G.events:hook("onSliderChanged", self.slider_changed)
 end
 
 function MM:exit()
     MM.super.exit(self)
     _G.events:unhook("onBtnClick", self.click)
+    _G.events:unhook("onSliderChanged", self.slider_changed)
+end
+
+function MM:on_slider_changed(slider)
+    -- print(slider.id)
+    -- print(slider:get_value())
 end
 
 function MM:on_click(button)
