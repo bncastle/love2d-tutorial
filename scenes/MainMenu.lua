@@ -61,7 +61,6 @@ function MM:on_slider_changed(slider)
 end
 
 function MM:on_click(button)
-    print("Button Clicked: " .. button.text)
     if button.text == "Start" then
         self.scene_mgr:switch("Test")
     elseif button.text == "Exit" then

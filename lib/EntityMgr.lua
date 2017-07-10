@@ -19,16 +19,14 @@ end
 
 function EM:add(entity)
     if contains(self.entities, entity) then return end
-
     --Add additional table entries that we want to exist for all entities
     entity.layer = entity.layer or 1
     entity.started = entity.started or false
-    entity.enabled = entity.enabled or true
+    entity.enabled = (entity.enabled == nil) or entity.enabled
     self.entities[#self.entities + 1] = entity
 
     --TODO: Sort entities
     table.sort(self.entities, layer_compare)
-
 end
 
 function EM:on_enter()
@@ -46,7 +44,7 @@ function EM:on_exit()
 end
 
 function EM:update(dt)
-    for i = 1, #self.entities do
+    for i = #self.entities, 1, -1 do
         local e = self.entities[i]
 
         --If the entity requests removal then do it
@@ -54,7 +52,6 @@ function EM:update(dt)
             e.remove = false
             if e.on_remove then e:on_remove() end
             table.remove(self.entities, i)
-            i = i -1
         end
 
         if e.enabled then
