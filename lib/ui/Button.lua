@@ -50,10 +50,14 @@ function Button:colors(normal, highlight, pressed, disabled)
     self.disabled = disabled or self.disabled
 end
 
+--Set the left position of the button
+--
 function Button:left(x)
     self.pos.x = x + self.w / 2
 end
 
+--Set the top position of the button
+--
 function Button:top(y)
     self.pos.y = y + self.h / 2
 end
@@ -90,10 +94,8 @@ function Button:update(dt)
 end
 
 function Button:draw()
-
     -- love.graphics.line(self.pos.x, self.pos.y - self.h / 2, self.pos.x, self.pos.y + self.h / 2)
     -- love.graphics.line(self.pos.x - self.w / 2, self.pos.y, self.pos.x + self.w / 2, self.pos.y)
-
     local r, g, b, a = love.graphics.getColor()
     love.graphics.setColor(self.color)
     love.graphics.rectangle("fill", self.pos.x - self.w / 2, self.pos.y - self.h / 2, self.w, self.h, 4, 4)

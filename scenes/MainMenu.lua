@@ -4,6 +4,7 @@ local Label = require("lib.ui.Label")
 local U = require("lib.Utils")
 local TextField = require("lib.ui.TextField")
 local Slider = require("lib.ui.Slider")
+local Checkbox = require("lib.ui.Checkbox")
 
 local MM = Scene:derive("MainMenu")
 
@@ -25,6 +26,7 @@ function MM:new(scene_mgr)
     self.vslider = Slider(20, 40 , 40, 200, "test", true)
     self.label = Label(425, 105, 250, 40, "0", U.gray(255), "left");
     self.vlabel = Label(12, 20, 60, 40, "0", U.gray(255), "center");
+    self.cb = Checkbox(love.graphics.getWidth() / 2 - 100, 250, 200, 40, "Enable Music")
 
     self.em:add(start_button)
     self.em:add(exit_button)
@@ -34,9 +36,11 @@ function MM:new(scene_mgr)
     self.em:add(self.vslider)
     self.em:add(self.label)
     self.em:add(self.vlabel)
+    self.em:add(self.cb)
 
-    self.click = function(btn)  self:on_click(btn) end
+    self.click = function(btn) self:on_click(btn) end
     self.slider_changed = function(slider) self:on_slider_changed(slider) end
+    self.checkbox_changed = function(checkbox, value) self:on_checkbox_changed(checkbox, value) end
 end
 
 local entered = false
@@ -44,12 +48,20 @@ function MM:enter()
     MM.super.enter(self)   
     _G.events:hook("onBtnClick", self.click)
     _G.events:hook("onSliderChanged", self.slider_changed)
+    _G.events:hook("onCheckboxClicked", self.checkbox_changed)
 end
 
 function MM:exit()
     MM.super.exit(self)
     _G.events:unhook("onBtnClick", self.click)
     _G.events:unhook("onSliderChanged", self.slider_changed)
+    _G.events:unhook("onCheckboxClicked", self.checkbox_changed)
+end
+
+function MM:on_checkbox_changed(checkbox, value)
+    -- if checkbox.text == "Enable Music" then
+        print(checkbox.text .." : " .. tostring(value))
+    -- end
 end
 
 function MM:on_slider_changed(slider)
