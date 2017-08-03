@@ -23,6 +23,8 @@ function Sprite:animate(anim_name)
         self.current_anim = anim_name
         self.animations[anim_name]:reset()
         self.animations[anim_name]:set(self.quad)
+    elseif self.animations[anim_name] == nil then
+        assert(false, anim_name .. " animation not found!")
     end
 end
 

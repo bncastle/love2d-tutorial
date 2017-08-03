@@ -9,6 +9,7 @@ local hero_atlas
 local spr
 local idle = Anim(16, 16, 16, 16, 4, 4, 6 )
 local walk = Anim(16, 32, 16, 16, 6, 6, 12)
+local jump = Anim(16, 48, 16, 16, 1, 1, 10, true)
 local swim = Anim(16, 64, 16, 16, 6, 6, 12)
 local punch = Anim(16, 80, 16, 16, 3, 3, 10, false)
 local snd
@@ -25,8 +26,8 @@ function T:enter()
     if not entered then
         entered = true
         spr = Sprite(hero_atlas,100,100, 16, 16, 4, 4)
-        spr:add_animations({idle = idle, walk = walk, swim = swim, punch = punch})
-        spr:animate("walk")
+        spr:add_animations({idle = idle, walk = walk, swim = swim, punch = punch, jump = jump})
+        spr:animate("idle")
         self.em:add(spr)
     end
 end
