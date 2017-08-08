@@ -40,11 +40,11 @@ end
 function love.update(dt)
     if dt > 0.035 then return end
     
-    if Key:key_down(",") then
-        sm:switch("MainMenu")
-    elseif Key:key_down(".") then
-        sm:switch("Test")
-    end
+    -- if Key:key_down(",") then
+    --     sm:switch("MainMenu")
+    -- elseif Key:key_down(".") then
+    --     sm:switch("Test")
+    -- end
 
     sm:update(dt)
     Key:update(dt)

@@ -1,12 +1,39 @@
 
 local pow = math.pow
+local sin = math.sin
+local cos = math.cos
+local PI = math.pi
 
 local T = {}
 local active_tweens = {}
 
 --Easing functions
 function T.linear(ratio) return ratio end
+
 function T.quad_in(ratio) return pow(ratio, 2) end
+function T.quad_out(ratio) return ratio * (2 - ratio) end
+--Note: This isn't a quadratic function, but it has the same shape
+function T.quad_inout(ratio) return pow(ratio, 2) * (2 - pow(ratio,2)) end
+
+function T.cubic_in(ratio) return pow(ratio, 3) end
+function T.cubic_out(ratio) return pow(ratio -1, 3) + 1 end
+-- function T.cubic_inout(ratio) return  end
+
+
+function T.quart_in(ratio) return pow(ratio, 4) end
+function T.quart_out(ratio) return 1 - pow(ratio - 1, 4) end
+-- function T.quart_inout(ratio) return  end
+
+
+function T.quint_in(ratio) return pow(ratio, 5) end
+function T.quint_out(ratio) return pow(ratio -1, 5) + 1 end
+-- function T.quint_inout(ratio) return  end
+
+function T.sine_in(ratio) return 1 - cos(ratio * PI / 2) end
+function T.sine_out(ratio) return sin(ratio * PI / 2) end
+function T.sine_inout(ratio) return (1 + sin(ratio * PI - PI /2)) / 2  end
+
+-- function T.back_out(ratio) return ratio * (2 - ratio * ratio) end
 
 
 -- function T:create(target, prop_name, from, to, duration)
