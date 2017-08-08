@@ -3,20 +3,10 @@ local Player = require("../Player")
 
 local T = Scene:derive("Test")
 
-local spr
-
 function T:new(scene_mgr) 
     T.super.new(self, scene_mgr)
-end
-
-local entered = false
-function T:enter()
-    T.super.enter(self)
-    if not entered then
-        entered = true
-        self.p = Player("idle")
-        self.em:add(self.p)
-    end
+    self.p = Player("idle")
+    self.em:add(self.p)
 end
 
 function T:update(dt)

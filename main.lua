@@ -1,4 +1,6 @@
 Key = require("lib.Keyboard")
+Tween = require("lib.Tween")
+
 local GPM = require("lib.GamepadMgr")
 local SM = require("lib.SceneMgr")
 local Event = require("lib.Events")
@@ -21,9 +23,10 @@ function love.load()
     gpm.event:hook('controller_added', on_controller_added)
     gpm.event:hook('controller_removed', on_controller_removed)
     
-    sm = SM("scenes", {"MainMenu", "Test"})
+    sm = SM("scenes", {"MainMenu", "Test", "TweenTest"})
     -- sm:switch("MainMenu")
-    sm:switch("Test")
+    -- sm:switch("Test")
+    sm:switch("TweenTest")
 end
 
 function on_controller_added(joyId)
@@ -46,6 +49,7 @@ function love.update(dt)
     sm:update(dt)
     Key:update(dt)
     gpm:update(dt)
+    Tween.update(dt)
 end
 
 function love.draw()
