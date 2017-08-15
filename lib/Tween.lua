@@ -12,29 +12,51 @@ function T.linear(ratio) return ratio end
 
 function T.quad_in(ratio) return pow(ratio, 2) end
 function T.quad_out(ratio) return ratio * (2 - ratio) end
---Note: This isn't a quadratic function, but it has the same shape
-function T.quad_inout(ratio) return pow(ratio, 2) * (2 - pow(ratio,2)) end
+function T.quad_inout(ratio) 
+    if ratio < 0.5 then
+        return 2 * pow(ratio,2)
+    else
+        return (1 - (1 - 2 * ratio) * (3 - 2 * ratio)) / 2
+    end
+end
 
 function T.cubic_in(ratio) return pow(ratio, 3) end
 function T.cubic_out(ratio) return pow(ratio -1, 3) + 1 end
--- function T.cubic_inout(ratio) return  end
+function T.cubic_inout(ratio) 
+    if ratio < 0.5 then
+        return 4 * pow(ratio,3)
+    else
+        return 1 + 4 * pow((ratio -1), 3)
+    end
+end
 
 
 function T.quart_in(ratio) return pow(ratio, 4) end
 function T.quart_out(ratio) return 1 - pow(ratio - 1, 4) end
--- function T.quart_inout(ratio) return  end
-
+function T.quart_inout(ratio) 
+    if ratio < 0.5 then
+        return 8 * pow(ratio,4)
+    else
+        return 1 - pow(ratio - 1.34086, 4)
+    end
+end
 
 function T.quint_in(ratio) return pow(ratio, 5) end
 function T.quint_out(ratio) return pow(ratio -1, 5) + 1 end
--- function T.quint_inout(ratio) return  end
+function T.quint_inout(ratio) 
+    if ratio < 0.5 then
+        return 16 * pow(ratio,5)
+    else
+        return 1 + 16 * pow(ratio -1, 5)
+    end
+end
 
 function T.sine_in(ratio) return 1 - cos(ratio * PI / 2) end
 function T.sine_out(ratio) return sin(ratio * PI / 2) end
 function T.sine_inout(ratio) return (1 + sin(ratio * PI - PI /2)) / 2  end
 
--- function T.back_out(ratio) return ratio * (2 - ratio * ratio) end
-
+function T.back_out(ratio) return ratio * (2 - ratio * ratio) end
+--TODO Create elastic and bounce easings
 
 -- function T:create(target, prop_name, from, to, duration)
 function T.create(target, prop_name, to, duration, ease_function)

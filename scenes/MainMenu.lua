@@ -7,6 +7,7 @@ local Slider = require("lib.ui.Slider")
 local Checkbox = require("lib.ui.Checkbox")
 
 local MM = Scene:derive("MainMenu")
+local menutxt
 
 function MM:new(scene_mgr)
     MM.super.new(self, scene_mgr)
@@ -18,7 +19,7 @@ function MM:new(scene_mgr)
     local exit_button = Button(sw / 2, sh / 2 + 30, 140, 40, "Exit")
     exit_button:colors({0, 128, 0, 255}, {64, 212, 64, 255}, {200, 255, 200, 255})
 
-    local mmtext = Label(0, 20, love.graphics.getWidth(), 40, "Main Menu")
+    menutxt = Label(love.graphics.getWidth() + 20, 20, love.graphics.getWidth(), 40, "Main Menu")
 
     self.tf = TextField(love.graphics.getWidth() / 2- 50, 60, 100, 40, "hello", U.gray(196), "left")
 
@@ -30,7 +31,7 @@ function MM:new(scene_mgr)
 
     self.em:add(start_button)
     self.em:add(exit_button)
-    self.em:add(mmtext)
+    self.em:add(menutxt)
     self.em:add(self.tf)
     self.em:add(self.slider)
     self.em:add(self.vslider)
@@ -45,6 +46,7 @@ end
 
 local entered = false
 function MM:enter()
+    Tween.create(menutxt.pos, "x", 0, 1, Tween.cubic_out)
     MM.super.enter(self)   
     _G.events:hook("onBtnClick", self.click)
     _G.events:hook("onSliderChanged", self.slider_changed)
