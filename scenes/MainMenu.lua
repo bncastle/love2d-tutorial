@@ -5,6 +5,7 @@ local U = require("lib.Utils")
 local TextField = require("lib.ui.TextField")
 local Slider = require("lib.ui.Slider")
 local Checkbox = require("lib.ui.Checkbox")
+local Bar = require("lib.ui.Bar")
 
 local MM = Scene:derive("MainMenu")
 local menutxt
@@ -29,6 +30,8 @@ function MM:new(scene_mgr)
     self.vlabel = Label(12, 20, 60, 40, "0", U.gray(255), "center");
     self.cb = Checkbox(love.graphics.getWidth() / 2 - 100, 250, 200, 40, "Enable Music")
 
+    self.bar = Bar("health", love.graphics.getWidth() / 2, love.graphics.getHeight() - 40, 200, 40, "0%")
+
     self.em:add(start_button)
     self.em:add(exit_button)
     self.em:add(menutxt)
@@ -38,10 +41,12 @@ function MM:new(scene_mgr)
     self.em:add(self.label)
     self.em:add(self.vlabel)
     self.em:add(self.cb)
+    self.em:add(self.bar)
 
     self.click = function(btn) self:on_click(btn) end
     self.slider_changed = function(slider) self:on_slider_changed(slider) end
     self.checkbox_changed = function(checkbox, value) self:on_checkbox_changed(checkbox, value) end
+    self.bar_changed = function(bar, value) self:on_bar_changed(bar, value) end
 end
 
 local entered = false
@@ -51,6 +56,7 @@ function MM:enter()
     _G.events:hook("onBtnClick", self.click)
     _G.events:hook("onSliderChanged", self.slider_changed)
     _G.events:hook("onCheckboxClicked", self.checkbox_changed)
+    _G.events:hook("onBarChanged", self.bar_changed)
 end
 
 function MM:exit()
@@ -58,12 +64,20 @@ function MM:exit()
     _G.events:unhook("onBtnClick", self.click)
     _G.events:unhook("onSliderChanged", self.slider_changed)
     _G.events:unhook("onCheckboxClicked", self.checkbox_changed)
+    _G.events:unhook("onBarChanged", self.bar_changed)
 end
 
 function MM:on_checkbox_changed(checkbox, value)
     -- if checkbox.text == "Enable Music" then
         print(checkbox.text .." : " .. tostring(value))
     -- end
+end
+
+function MM:on_bar_changed(bar, value)
+    bar.text = tostring(value .. "%")
+    if value == 100 then
+        bar.fill_color = U.color(0,255,0,255)
+    end
 end
 
 function MM:on_slider_changed(slider)
@@ -88,6 +102,10 @@ function MM:update(dt)
 
     if Key:key_down("escape") then
         love.event.quit()
+    elseif Key:key_down("e") then
+        self.bar:set(self.bar.percentage + 5)
+    elseif Key:key_down("q") then
+        self.bar:set(self.bar.percentage - 5)
     -- elseif Key:key_down("space") then
     --     self.button:enable(not self.button.interactible)
     end

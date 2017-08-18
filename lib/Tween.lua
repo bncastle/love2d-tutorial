@@ -16,7 +16,7 @@ function T.quad_inout(ratio)
     if ratio < 0.5 then
         return 2 * pow(ratio,2)
     else
-        return (1 - (1 - 2 * ratio) * (3 - 2 * ratio)) / 2
+        return 1 - 2 * pow(ratio - 1, 2)
     end
 end
 
@@ -37,7 +37,7 @@ function T.quart_inout(ratio)
     if ratio < 0.5 then
         return 8 * pow(ratio,4)
     else
-        return 1 - pow(ratio - 1.34086, 4)
+        return 1 - 8 * pow(ratio - 1, 4)
     end
 end
 
