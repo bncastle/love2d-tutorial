@@ -4,6 +4,8 @@ local Anim = require("lib.Animation")
 
 local Sprite = Class:derive("Sprite")
 
+--where x,y is the center of the sprite
+--
 function Sprite:new(atlas, x, y, w, h, sx, sy, angle, color)
     self.pos = Vector2(x or 0, y or 0)
     self.w = w
@@ -64,9 +66,20 @@ function Sprite:update(dt)
     end
 end
 
+function Sprite:rect()
+    local r =  {w = self.w * self.scale.x, h = self.h * self.scale.y}
+    --Translate x,y to the upper rihgt corner of the rectangle
+    r.x = self.pos.x - r.w / 2
+    r.y = self.pos.y - r.h / 2
+    return r
+end
+
 function Sprite:draw()
     love.graphics.setColor(self.tintColor)
-    love.graphics.draw(self.atlas, self.quad, self.pos.x , self.pos.y, self.angle, self.scale.x * self.flip.x, self.scale.y * self.flip.y, self.w / 2, self.h / 2)   
+    love.graphics.draw(self.atlas, self.quad, self.pos.x , self.pos.y, self.angle, self.scale.x * self.flip.x, self.scale.y * self.flip.y, self.w / 2, self.h / 2)
+
+    local r = self:rect()
+    love.graphics.rectangle("line", r.x,r.y, r.w,r.h)   
 end
 
 return Sprite
