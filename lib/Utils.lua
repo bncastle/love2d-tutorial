@@ -39,7 +39,6 @@ function U.AABBColl(rect1, rect2)
            rect1b >= rect2.y and rect2b >= rect1.y
 end
 
---For next time
 --Circle to circle collision. Refine this!
 function U.CircleColl(circle1, circle2)
     local d = sqrt( pow (circle1.x - circle2.x, 2) + pow(circle1.y - circle2.y, 2))
