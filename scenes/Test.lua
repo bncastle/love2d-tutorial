@@ -32,7 +32,7 @@ function T:update(dt)
         self.p.spr.tintColor = U.color(255)
     end
 
-    if U.CircleColl(self.c1, self.c2) then
+    if U.CirclesCollide(self.c1, self.c2) then
         self.c1.c = U.color(0,128,128,200)
     else
         self.c1.c = U.color(255)
