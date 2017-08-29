@@ -1,6 +1,7 @@
 local Class = require("lib.Class")
 local Vector2 = require("lib.Vector2")
 local Anim = require("lib.Animation")
+local Rect = require("lib.Rect")
 
 local Sprite = Class:derive("Sprite")
 
@@ -67,11 +68,7 @@ function Sprite:update(dt)
 end
 
 function Sprite:rect()
-    local r =  {w = self.w * self.scale.x, h = self.h * self.scale.y}
-    --Translate x,y to the upper rihgt corner of the rectangle
-    r.x = self.pos.x - r.w / 2
-    r.y = self.pos.y - r.h / 2
-    return r
+    return Rect.create_centered(self.pos.x, self.pos.y, self.w * self.scale.x, self.h * self.scale.y)
 end
 
 function Sprite:draw()
