@@ -52,6 +52,9 @@ function R:minowski_diff(other)
     return R.create_centered(newLeft.x, newLeft.y, newSize.x, newSize.y)
 end
 
+--Returns a Vector2 that indicates the point on the
+--rectangle's boundary that is closest to the given point
+--
 function R:closest_point_on_bounds(point)
     local min_dist = abs(point.x - self.x)
     local max = self:max()
@@ -73,6 +76,7 @@ function R:closest_point_on_bounds(point)
         min_dist = abs(self.y - point.y)
         bounds_point = Vector2(point.x, self.y)
     end
+
     return bounds_point
 end
 

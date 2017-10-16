@@ -20,6 +20,31 @@ function U.point_in_rect(point, rect)
         point.y > rect.y + rect.h)
 end
 
+--
+--Given a bounds point obtained from Rect.closest_point_on_bounds()
+--This function returns an object that indicates where if any
+-- sides were involoved in the collision
+function U.bounds_point_to_collision_side(bounds_point)
+    local collision_info = {collided = false}
+    if bounds_point.x > 0 then
+        collision_info.left = true
+        collision_info.collided = true
+    elseif bounds_point.x < 0 then
+        collision_info.right = true
+        collision_info.collided = true
+    end
+
+    if bounds_point.y > 0 then
+        collision_info.top = true
+        collision_info.collided = true
+    elseif bounds_point.y < 0 then
+        collision_info.bottom = true
+        collision_info.collided = true
+    end   
+    
+    return collision_info
+end    
+
 --rx,ry is the upper left corner of the rectangle
 --rw,rh is the width and height of the rectangle
 function U.mouse_in_rect(mx, my, rx, ry, rw, rh)

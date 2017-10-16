@@ -34,7 +34,16 @@ function T:update(dt)
         self.p.spr.tintColor = U.color(0,128,128,200)
 
         local md = r2:minowski_diff(r1)
+
+        --This will give us our separation vector
+        -- x > 0 = Left side collision, x < 0 = right side collision
+        -- y > 0 = Top side collision, y < 0 = bottom collision
         local sep = md:closest_point_on_bounds(Vector2())
+        
+        local collision = U.bounds_point_to_collision_side(sep)
+        print(collision.bottom)
+        print(collision.top)
+
         self.p.spr.pos.x = self.p.spr.pos.x + sep.x 
         self.p.spr.pos.y = self.p.spr.pos.y + sep.y 
         

@@ -36,7 +36,9 @@ function Anim:set(quad)
 end
 
 function Anim:update(dt, quad)
-    if #self.frames <= 1 then return
+    if #self.frames <= 1 then 
+        self.done = true
+        return
 
     elseif self.timer > 0 then
         self.timer = self.timer - dt
