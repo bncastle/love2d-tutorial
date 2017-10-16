@@ -1,9 +1,10 @@
 local Scene = require("lib.Scene")
 local U = require("lib.Utils")
 local Vector2 = require("lib.Vector2")
+local Vector3 = require("lib.Vector3")
 
 local Player = require("../Player")
-local Enemy = require("../Enemy")
+local Missile = require("../Missile")
 
 local T = Scene:derive("Test")
 
@@ -12,8 +13,9 @@ function T:new(scene_mgr)
     self.p = Player()
     self.em:add(self.p)
 
-    self.e = Enemy(320, 100)
+    self.e = Missile(320, 100)
     self.em:add(self.e)
+    self.e:target(self.p.spr)
 
     self.c1 = {x = 200, y = 200, r= 20, c = U.color(255)}
     self.c2 = {x = 320, y = 200, r= 40, c = U.color(255, 200, 200)}
@@ -47,7 +49,6 @@ function T:update(dt)
     else
         self.p.spr.tintColor = U.color(255)
     end
-
 
     --Check if the circles collide
     if U.CirclesCollide(self.c1, self.c2) then

@@ -105,11 +105,11 @@ function P:update(dt)
     self.spr:update(dt)
     self.spr.pos.x = self.spr.pos.x + self.vx * 115 * dt
     
-    -- if Key:key("up") then
-    --     self.spr.pos.y = self.spr.pos.y - 115 * dt
-    -- elseif Key:key("down") then
-    --     self.spr.pos.y = self.spr.pos.y + 115 * dt
-    -- end
+    if Key:key("up") then
+        self.spr.pos.y = self.spr.pos.y - 115 * dt
+    elseif Key:key("down") then
+        self.spr.pos.y = self.spr.pos.y + 115 * dt
+    end
 
     if jumping and y_before_jump == nil then
         y_vel = -400
