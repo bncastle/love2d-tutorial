@@ -41,7 +41,7 @@ end
 
 --Circle to circle collision. Refine this!
 --returns boolean -> true if circles overlap, false otherwise, 
---if colliding then also returns a minimum separation unit vector
+--if colliding then also returns a minimum separation vector
 function U.CircleOverlaps(circle1, circle2)
     local c1toc2 = Vector2(circle1.x - circle2.x, circle1.y - circle2.y)
     local d = c1toc2:mag()
@@ -49,9 +49,9 @@ function U.CircleOverlaps(circle1, circle2)
     local overlaps = d < circle1.r + circle2.r
 
     if overlaps then
-        local unit = c1toc2:unit()
-        unit:mul(circle1.r + circle2.r - d)
-        return true, unit
+        c1toc2:normalize()
+        c1toc2:mul(circle1.r + circle2.r - d)
+        return true, c1toc2
     else
         return false
     end

@@ -48,7 +48,7 @@ end
 function R:minowski_diff(other) 
     local top_left = Vector2.sub(self:min(), other:max())
     local newSize = Vector2.add(self:size(), other:size())
-    local newLeft = Vector2.add(top_left, newSize:div(2))
+    local newLeft = Vector2.add(top_left, Vector2.divide(newSize,2))
     return R.create_centered(newLeft.x, newLeft.y, newSize.x, newSize.y)
 end
 

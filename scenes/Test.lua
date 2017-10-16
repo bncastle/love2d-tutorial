@@ -42,6 +42,8 @@ function T:update(dt)
         self.p.spr.tintColor = U.color(255)
     end
 
+
+    --Check if the circles collide
     if U.CirclesCollide(self.c1, self.c2) then
         self.c1.c = U.color(0,128,128,200)
     else
