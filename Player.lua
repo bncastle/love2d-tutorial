@@ -126,7 +126,18 @@ function P:update(dt)
             self.anim_sm:change("idle")
         end
     end
+end
 
+--This function responds to a collision event on any of the
+-- given sides of the player's collision rect
+-- top, bottom, left, right are all boolean values
+function P:collided(top, bottom, left, right)
+    if bottom then
+        jumping = false
+        y_before_jump = nil
+        self.vx = 0
+        self.anim_sm:change("idle")
+    end
 end
 
 function P:draw()

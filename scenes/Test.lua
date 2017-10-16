@@ -39,10 +39,9 @@ function T:update(dt)
         -- x > 0 = Left side collision, x < 0 = right side collision
         -- y > 0 = Top side collision, y < 0 = bottom collision
         local sep = md:closest_point_on_bounds(Vector2())
-        
-        local collision = U.bounds_point_to_collision_side(sep)
-        print(collision.bottom)
-        print(collision.top)
+
+        --tell the player on which side it has a collision
+        self.p:collided(md:collides_top(sep), md:collides_bottom(sep), md:collides_left(sep), md:collides_right(sep))
 
         self.p.spr.pos.x = self.p.spr.pos.x + sep.x 
         self.p.spr.pos.y = self.p.spr.pos.y + sep.y 

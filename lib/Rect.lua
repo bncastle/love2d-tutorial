@@ -80,4 +80,27 @@ function R:closest_point_on_bounds(point)
     return bounds_point
 end
 
+--Given a bounds point obtained from Rect.closest_point_on_bounds()
+--this returns true if a collision occurred on the right side of the rectangle
+function R:collides_right(bounds_point)
+    return bounds_point.x < 0 
+end
+
+--Given a bounds point obtained from Rect.closest_point_on_bounds()
+--this returns true if a collision occurred on the left side of the rectangle
+function R:collides_left(bounds_point)
+    return bounds_point.x > 0 
+end
+
+--Given a bounds point obtained from Rect.closest_point_on_bounds()
+--this returns true if a collision occurred on the top of the rectangle
+function R:collides_bottom(bounds_point)
+    return bounds_point.y < 0 
+end
+
+--Given a bounds point obtained from Rect.closest_point_on_bounds()
+--this returns true if a collision occurred on the bottom of the rectangle
+function R:collides_top(bounds_point)
+    return bounds_point.y > 0 
+end
 return R
