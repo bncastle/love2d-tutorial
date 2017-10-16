@@ -9,6 +9,8 @@ local E = Class:derive("Missile")
 
 local missile_atlas
 local target_object
+local rotate_speed = 100
+local missile_speed = 40
 
 --Animation data
 local idle = Anim(0,0, 124, 80, 2, 2, 6 )
@@ -32,13 +34,20 @@ end
 
 function E:update(dt)
     if target_object ~= nil then
-        local missile_to_target = Vector2.sub(target_object.pos, self.spr.pos)
+        local missile_to_target = Vector2.sub(target_object:center(), self.spr:center())
+        missile_to_target:normalize()
+
         local missile_dir = Vector2( math.cos(self.spr.angle ), math.sin(self.spr.angle))
+        missile_dir:normalize()
+
         -- print(missile_dir.x .. " " .. missile_dir.y )
-        local cp = Vector3.cross(Vector3(missile_dir.x, missile_dir.y, 0), Vector3(missile_to_target.y, missile_to_target.x, 0))
+        local cp = Vector3.cross(missile_dir, missile_to_target)
+
         print(cp.x .. " " .. cp.y  .. " " .. cp.z)
 
-        -- self.spr.angle = self.spr.angle + 1 * dt
+        self.spr.angle = self.spr.angle + cp.z * rotate_speed * (math.pi / 180) * dt
+        self.spr.pos.x = self.spr.pos.x + (missile_dir.x * missile_speed * dt)
+        self.spr.pos.y = self.spr.pos.y + (missile_dir.y * missile_speed * dt)
     end
 
     self.spr:update(dt)

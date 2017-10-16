@@ -67,6 +67,10 @@ function Sprite:update(dt)
     end
 end
 
+function Sprite:center()
+    return Vector2(self.pos.x + self.w /2, self.pos.y + self.h / 2)
+end
+
 function Sprite:rect()
     return Rect.create_centered(self.pos.x, self.pos.y, self.w * self.scale.x, self.h * self.scale.y)
 end
