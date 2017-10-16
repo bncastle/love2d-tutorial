@@ -12,9 +12,7 @@ function T:new(scene_mgr)
     self.p = Player()
     self.em:add(self.p)
 
-    self.e = Enemy()
-    self.e.spr.tintColor = U.color(255,0,0,255)
-    self.e.spr.pos.x = 320
+    self.e = Enemy(320, 100)
     self.em:add(self.e)
 
     self.c1 = {x = 200, y = 200, r= 20, c = U.color(255)}
