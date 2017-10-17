@@ -2,6 +2,7 @@ local Class = require("lib.Class")
 local Vector2 = require("lib.Vector2")
 local Anim = require("lib.Animation")
 local Rect = require("lib.Rect")
+local U = require("lib.Utils")
 
 local Sprite = Class:derive("Sprite")
 
@@ -81,13 +82,32 @@ function Sprite:rect()
     return Rect.create_centered(e.Transform.x - (self.w / 2 * self.scale.x), e.Transform.y - (self.h / 2 * self.scale.y), self.w * self.scale.x, self.h * self.scale.y)
 end
 
+function Sprite:poly()
+    local e = self.entity
+    local a = e.Transform.angle
+    local x = (self.w / 2 * self.scale.x)
+    local y = (self.h / 2 * self.scale.y)
+
+    local rx1,ry1 = U.rotate_point(-x, -y, a, e.Transform.x - (self.w / 2 * self.scale.x), e.Transform.y - (self.h / 2 * self.scale.y))
+    local rx2,ry2 = U.rotate_point( x, -y, a, e.Transform.x - (self.w / 2 * self.scale.x), e.Transform.y - (self.h / 2 * self.scale.y))
+    local rx3,ry3 = U.rotate_point( x,  y, a, e.Transform.x - (self.w / 2 * self.scale.x), e.Transform.y - (self.h / 2 * self.scale.y))
+    local rx4,ry4 = U.rotate_point(-x,  y, a, e.Transform.x - (self.w / 2 * self.scale.x), e.Transform.y - (self.h / 2 * self.scale.y))
+    local p ={ rx1, ry1, rx2, ry2, rx3, ry3, rx4, ry4 }
+    return p
+end
+
 function Sprite:draw()
     local e = self.entity
     love.graphics.setColor(self.tintColor)
     love.graphics.draw(self.atlas, self.quad, e.Transform.x - (self.w / 2 * self.scale.x), e.Transform.y - (self.h / 2 * self.scale.y), e.Transform.angle, self.scale.x * self.flip.x, self.scale.y * self.flip.y, self.w / 2, self.h / 2)
 
     local r = self:rect()
-    love.graphics.rectangle("line", r.x,r.y, r.w,r.h)   
+
+    love.graphics.setColor({255,64, 128})
+    love.graphics.rectangle("line", r.x,r.y, r.w,r.h)
+
+    love.graphics.setColor({255,255, 255})
+    love.graphics.polygon("line", self:poly())
 end
 
 return Sprite

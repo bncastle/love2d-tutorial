@@ -106,4 +106,16 @@ function U.index_of(list, item)
     return -1
 end
 
+--
+--Rotates the given point about the origin 
+--the given angle
+--Note: the last 2 parameters are optional and allow you to
+--add an offset to the results AFTER they have been rotated
+function U.rotate_point(x, y, angle, post_rotate_x_offset, post_rotate_y_offset)
+    local xrot = math.cos(angle) * x - math.sin(angle) * y + post_rotate_x_offset or 0
+    local yrot = math.sin(angle) * x + math.cos(angle) * y + post_rotate_y_offset or 0
+    --return rotated point
+    return xrot, yrot
+end
+
 return U
