@@ -43,8 +43,7 @@ function E:update(dt)
         -- print(missile_dir.x .. " " .. missile_dir.y )
         local cp = Vector3.cross(missile_dir, missile_to_target)
 
-        print(cp.x .. " " .. cp.y  .. " " .. cp.z)
-
+        -- print(cp.x .. " " .. cp.y  .. " " .. cp.z)
         self.spr.angle = self.spr.angle + cp.z * rotate_speed * (math.pi / 180) * dt
         self.spr.pos.x = self.spr.pos.x + (missile_dir.x * missile_speed * dt)
         self.spr.pos.y = self.spr.pos.y + (missile_dir.y * missile_speed * dt)

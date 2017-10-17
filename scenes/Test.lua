@@ -3,6 +3,9 @@ local U = require("lib.Utils")
 local Vector2 = require("lib.Vector2")
 local Vector3 = require("lib.Vector3")
 
+local Entity = require("lib.Entity")
+local Transform = require("lib.components.Transform")
+
 local Player = require("../Player")
 local Missile = require("../Missile")
 

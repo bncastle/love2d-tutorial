@@ -84,4 +84,26 @@ function U.CirclesCollide(circle1, circle2, ratio)
     return overlaps
 end
 
+--returns true if the given item is contained
+--within the specified table
+--
+-- list = the table inwhich to search for the item
+-- item = the item for which to search
+function U.contains(list, item)
+    for val in pairs(list) do
+        if val == item then return true end
+    end
+    return false
+end
+
+--returns the index into the list where the item is located
+--if item is not found, -1 is returned
+--
+function U.index_of(list, item)
+    for i, val in ipairs(list) do
+        if val == item then return i end
+    end
+    return -1
+end
+
 return U
