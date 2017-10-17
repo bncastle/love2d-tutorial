@@ -10,11 +10,10 @@ local Sprite = Class:derive("Sprite")
 --
 --Note: This component assumes the presence of a Transform component!
 --
-function Sprite:new(atlas, w, h, sx, sy, color)
+function Sprite:new(atlas, w, h, color)
     self.w = w
     self.h = h
     self.flip = Vector2(1,1)
-    self.scale = Vector2(sx or 1, sy or 1)
     self.atlas = atlas
     self.animations = {}
     self.current_anim = ""
@@ -23,7 +22,10 @@ function Sprite:new(atlas, w, h, sx, sy, color)
 end
 
 function Sprite:on_start()
-    assert(self.entity.Transform ~=nil, "Sprite component requires a Transform component to exists in the attached entity!")
+    print("start! " .. self.entity.type)
+    assert(self.entity.Transform ~=nil, "Sprite component requires a Transform component to exist in the attached entity!")
+    self.tr = self.entity.Transform
+    print("started")
 end
 
 function Sprite:animate(anim_name)
@@ -73,33 +75,30 @@ function Sprite:update(dt)
 end
 
 function Sprite:center()
-    local e = self.entity
-    return Vector2(e.Transform.x + self.w /2, e.Transform.y + self.h / 2)
+    return Vector2(self.tr.x + self.w /2, self.tr.y + self.h / 2)
 end
 
 function Sprite:rect()
-    local e = self.entity
-    return Rect.create_centered(e.Transform.x - (self.w / 2 * self.scale.x), e.Transform.y - (self.h / 2 * self.scale.y), self.w * self.scale.x, self.h * self.scale.y)
+    return Rect.create_centered(self.tr.x , self.tr.y, self.w * self.tr.sx, self.h * self.tr.sy)
 end
 
 function Sprite:poly()
-    local e = self.entity
-    local a = e.Transform.angle
-    local x = (self.w / 2 * self.scale.x)
-    local y = (self.h / 2 * self.scale.y)
+    local x = (self.w / 2 * self.tr.sx)
+    local y = (self.h / 2 * self.tr.sy)
 
-    local rx1,ry1 = U.rotate_point(-x, -y, a, e.Transform.x - (self.w / 2 * self.scale.x), e.Transform.y - (self.h / 2 * self.scale.y))
-    local rx2,ry2 = U.rotate_point( x, -y, a, e.Transform.x - (self.w / 2 * self.scale.x), e.Transform.y - (self.h / 2 * self.scale.y))
-    local rx3,ry3 = U.rotate_point( x,  y, a, e.Transform.x - (self.w / 2 * self.scale.x), e.Transform.y - (self.h / 2 * self.scale.y))
-    local rx4,ry4 = U.rotate_point(-x,  y, a, e.Transform.x - (self.w / 2 * self.scale.x), e.Transform.y - (self.h / 2 * self.scale.y))
+    local rx1,ry1 = U.rotate_point(-x, -y, self.tr.angle, self.tr.x, self.tr.y)
+    local rx2,ry2 = U.rotate_point( x, -y, self.tr.angle, self.tr.x, self.tr.y)
+    local rx3,ry3 = U.rotate_point( x,  y, self.tr.angle, self.tr.x, self.tr.y)
+    local rx4,ry4 = U.rotate_point(-x,  y, self.tr.angle, self.tr.x, self.tr.y)
     local p ={ rx1, ry1, rx2, ry2, rx3, ry3, rx4, ry4 }
     return p
 end
 
 function Sprite:draw()
-    local e = self.entity
+    print(self.tr.sx .. " " .. self.tr.sy)
+    
     love.graphics.setColor(self.tintColor)
-    love.graphics.draw(self.atlas, self.quad, e.Transform.x - (self.w / 2 * self.scale.x), e.Transform.y - (self.h / 2 * self.scale.y), e.Transform.angle, self.scale.x * self.flip.x, self.scale.y * self.flip.y, self.w / 2, self.h / 2)
+    love.graphics.draw(self.atlas, self.quad, self.tr.x, self.tr.y, self.tr.angle, self.tr.sx * self.flip.x, self.tr.sy * self.flip.y, self.w / 2, self.h / 2)
 
     local r = self:rect()
 

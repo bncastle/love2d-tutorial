@@ -1,5 +1,4 @@
 local Entity = require("lib.Entity")
-local StateMachine = require("lib.StateMachine")
 local Anim = require("lib.Animation")
 local Vector2 = require("lib.Vector2")
 local Vector3 = require("lib.Vector3")
@@ -24,12 +23,12 @@ function M:new(x, y)
         missile_atlas = love.graphics.newImage("assets/gfx/missile.png")
     end
 
-    local spr = Sprite(missile_atlas, 124, 80, 1, 1)
+    local spr = Sprite(missile_atlas, 124, 80)
     spr:add_animations({idle = idle})
     spr:animate("idle")
     self.vx = 0
 
-    self:add(Transform(x, y, 0))
+    self:add(Transform(x, y))
     self:add(spr)    
 end
 
@@ -40,6 +39,8 @@ function M:target(object)
 end
 
 function M:update(dt)
+    M.super.update(self, dt)
+    
     if target_object ~= nil then
         local missile_to_target = Vector2.sub(target_object:center(), self.Sprite:center())
         missile_to_target:normalize()
@@ -57,6 +58,5 @@ function M:update(dt)
     end
 
 end
-
 
 return M

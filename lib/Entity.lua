@@ -12,7 +12,11 @@ local function priority_compare(e1, e2)
     return e1.priority < e2.priority
 end
 
-function E:add(component)
+--Add a component to this entity
+--
+--Note: name is optional and if it is not used, the component's class type
+--will be used instead
+function E:add(component, name)
     if U.contains(self.components, component) then return end
     --Add additional table entries that we want to exist for all components
 
@@ -28,10 +32,18 @@ function E:add(component)
     --Add the component to the list
     self.components[#self.components + 1] = component
 
-    if component.type and type(component.type) == "string" then
+    if name ~=nil and type(name) == "string" and name.len() > 0 then
+        assert(self[name] == nil, "This entity already contains a component of name: " .. name)
+        self[name] = component
+    elseif component.type and type(component.type) == "string" then
+        assert(self[component.type] == nil, "This entity already contains a component of name: " .. component.type)
         self[component.type] = component
     end
 
+    if self.started and not component.started and component.enabled then
+        if component.on_start then component:on_start() end
+    end
+    
     --Sort components
     table.sort(self.components, priority_compare)
 end
@@ -50,7 +62,20 @@ function E:remove(component)
     if component.type and type(component.type) == "string" then
         self[component.type] = nil
         component.entity = nil
-    end  
+    end
+end
+
+function E:on_start()
+    for i = 1, #self.components do
+        local component = self.components[i]
+        --if the component is enabled, then call on_start() if it has one
+        if component.enabled then
+            if not component.started then
+                component.started = true
+                if component.on_start then component:on_start() end
+            end
+        end
+    end
 end
 
 function E:update(dt)

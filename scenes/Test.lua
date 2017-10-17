@@ -18,6 +18,7 @@ function T:new(scene_mgr)
 
     self.e = Missile(320, 100)
     self.em:add(self.e)
+    
     self.e:target(self.p.Sprite)
 
     self.c1 = {x = 200, y = 200, r= 20, c = U.color(255)}
@@ -36,7 +37,7 @@ function T:update(dt)
     if U.AABBColl(r1, r2) then
         self.p.Sprite.tintColor = U.color(0,128,128,200)
 
-        local md = r2:minowski_diff(r1)
+        local md = r2:minkowski_diff(r1)
 
         --This will give us our separation vector
         -- x > 0 = Left side collision, x < 0 = right side collision

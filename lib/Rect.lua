@@ -45,7 +45,7 @@ function R:size()
 end
 
 --other is also a Rect
-function R:minowski_diff(other) 
+function R:minkowski_diff(other) 
     local top_left = Vector2.sub(self:min(), other:max())
     local newSize = Vector2.add(self:size(), other:size())
     local newLeft = Vector2.add(top_left, Vector2.divide(newSize,2))
