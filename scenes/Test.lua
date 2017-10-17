@@ -18,7 +18,7 @@ function T:new(scene_mgr)
 
     self.e = Missile(320, 100)
     self.em:add(self.e)
-    self.e:target(self.p.spr)
+    self.e:target(self.p.Sprite)
 
     self.c1 = {x = 200, y = 200, r= 20, c = U.color(255)}
     self.c2 = {x = 320, y = 200, r= 40, c = U.color(255, 200, 200)}
@@ -31,10 +31,10 @@ function T:update(dt)
         love.event.quit()
     end
 
-    local r1 = self.p.spr:rect()
-    local r2 = self.e.spr:rect()
+    local r1 = self.p.Sprite:rect()
+    local r2 = self.e.Sprite:rect()
     if U.AABBColl(r1, r2) then
-        self.p.spr.tintColor = U.color(0,128,128,200)
+        self.p.Sprite.tintColor = U.color(0,128,128,200)
 
         local md = r2:minowski_diff(r1)
 
@@ -46,11 +46,11 @@ function T:update(dt)
         --tell the player on which side it has a collision
         self.p:collided(md:collides_top(sep), md:collides_bottom(sep), md:collides_left(sep), md:collides_right(sep))
 
-        self.p.spr.pos.x = self.p.spr.pos.x + sep.x 
-        self.p.spr.pos.y = self.p.spr.pos.y + sep.y 
+        self.p.Transform.x = self.p.Transform.x + sep.x 
+        self.p.Transform.y = self.p.Transform.y + sep.y 
         
     else
-        self.p.spr.tintColor = U.color(255)
+        self.p.Sprite.tintColor = U.color(255)
     end
 
     --Check if the circles collide

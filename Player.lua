@@ -1,9 +1,12 @@
-local Class = require("lib.Class")
+local Entity = require("lib.Entity")
 local StateMachine = require("lib.StateMachine")
 local Anim = require("lib.Animation")
-local Sprite = require("lib.Sprite")
 
-local P = Class:derive("Player")
+local Sprite = require("lib.components.Sprite")
+local Transform = require("lib.components.Transform")
+
+
+local P = Entity:derive("Player")
 
 local hero_atlas
 local snd
@@ -15,7 +18,12 @@ local jump = Anim(16, 48, 16, 16, 1, 1, 10, false)
 local swim = Anim(16, 64, 16, 16, 6, 6, 12)
 local punch = Anim(16, 80, 16, 16, 3, 3, 10, false)
 
+local transform
+local sprite
+
 function P:new()
+    P.super.new(self)
+
     if hero_atlas == nil then
         hero_atlas = love.graphics.newImage("assets/gfx/hero.png")
     end
@@ -23,16 +31,21 @@ function P:new()
         snd = love.audio.newSource("assets/sfx/hit01.wav", "static")
     end
 
-    self.spr = Sprite(hero_atlas,100,100, 16, 16, 4, 4)
-    self.spr:add_animations({idle = idle, walk = walk, swim = swim, punch = punch, jump = jump})
-    self.spr:animate("idle")
+    --Create/Add components to our entity
+    sprite = Sprite(hero_atlas, 16, 16, 4, 4)
+    sprite:add_animations({idle = idle, walk = walk, swim = swim, punch = punch, jump = jump})
+    sprite:animate("idle")
     self.vx = 0
+
+    transform = Transform(100,100, 0)
+    self:add(transform)
+    self:add(sprite)
 
     self.anim_sm = StateMachine(self, "idle")
 end
 
 function P:idle_enter(dt)
-    self.spr:animate("idle")
+    sprite:animate("idle")
 end
 
 function P:idle(dt)
@@ -46,13 +59,13 @@ function P:idle(dt)
 end
 
 function P:punch_enter(dt)
-    self.spr:animate("punch")
+    sprite:animate("punch")
     love.audio.stop(snd)
     love.audio.play(snd)
 end
 
 function P:punch(dt)
-    if self.spr:animation_finished() then
+    if sprite:animation_finished() then
         self.anim_sm:change("idle")
     end
 end
@@ -62,7 +75,7 @@ local y_before_jump = nil
 
 function P:jump_enter(dt)
     jumping = true
-    self.spr:animate("jump")
+    sprite:animate("jump")
 end
 
 function P:jump(dt)
@@ -75,16 +88,16 @@ function P:jump(dt)
 end
 
 function P:walk_enter(dt)
-    self.spr:animate("walk")
+    sprite:animate("walk")
 end
 
 function P:walk(dt)
 
     if Key:key("right") and not Key:key("left") and vx ~= 1 then
-        self.spr:flip_h(false)
+        sprite:flip_h(false)
         self.vx = 1    
     elseif Key:key("left") and not Key:key("right") and vx ~= -1 then
-        self.spr:flip_h(true)
+        sprite:flip_h(true)
         self.vx = -1
     elseif not Key:key("left") and not Key:key("right") then
         self.vx = 0
@@ -101,26 +114,27 @@ end
 local y_vel = 0
 local y_gravity = 1000
 function P:update(dt)
+    P.super.update(self, dt)
     self.anim_sm:update(dt)
-    self.spr:update(dt)
-    self.spr.pos.x = self.spr.pos.x + self.vx * 115 * dt
+    
+    transform.x = transform.x + self.vx * 115 * dt
     
     if Key:key("up") then
-        self.spr.pos.y = self.spr.pos.y - 115 * dt
+        transform.y = transform.y - 115 * dt
     elseif Key:key("down") then
-        self.spr.pos.y = self.spr.pos.y + 115 * dt
+        transform.y = transform.y + 115 * dt
     end
 
     if jumping and y_before_jump == nil then
         y_vel = -400
-        y_before_jump = self.spr.pos.y
+        y_before_jump = transform.y
     elseif jumping then
         y_vel = y_vel + y_gravity * dt
-        self.spr.pos.y = self.spr.pos.y + y_vel * dt
+        transform.y = transform.y + y_vel * dt
 
-        if self.spr.pos.y >= y_before_jump then
+        if transform.y >= y_before_jump then
             jumping = false
-            self.spr.pos.y = y_before_jump
+            transform.y = y_before_jump
             y_before_jump = nil
             self.vx = 0
             self.anim_sm:change("idle")
@@ -138,10 +152,6 @@ function P:collided(top, bottom, left, right)
         self.vx = 0
         self.anim_sm:change("idle")
     end
-end
-
-function P:draw()
-    self.spr:draw()
 end
 
 return P

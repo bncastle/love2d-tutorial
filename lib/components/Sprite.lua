@@ -7,8 +7,9 @@ local Sprite = Class:derive("Sprite")
 
 --where x,y is the center of the sprite
 --
-function Sprite:new(atlas, x, y, w, h, sx, sy, angle, color)
-    self.pos = Vector2(x or 0, y or 0)
+--Note: This component assumes the presence of a Transform component!
+--
+function Sprite:new(atlas, w, h, sx, sy, color)
     self.w = w
     self.h = h
     self.flip = Vector2(1,1)
@@ -16,9 +17,12 @@ function Sprite:new(atlas, x, y, w, h, sx, sy, angle, color)
     self.atlas = atlas
     self.animations = {}
     self.current_anim = ""
-    self.angle = angle or 0
     self.quad = love.graphics.newQuad(0,0, w, h, atlas:getDimensions())
     self.tintColor = color or {255,255,255,255}
+end
+
+function Sprite:on_start()
+    assert(self.entity.Transform ~=nil, "Sprite component requires a Transform component to exists in the attached entity!")
 end
 
 function Sprite:animate(anim_name)
@@ -68,16 +72,19 @@ function Sprite:update(dt)
 end
 
 function Sprite:center()
-    return Vector2(self.pos.x + self.w /2, self.pos.y + self.h / 2)
+    local e = self.entity
+    return Vector2(e.Transform.x + self.w /2, e.Transform.y + self.h / 2)
 end
 
 function Sprite:rect()
-    return Rect.create_centered(self.pos.x, self.pos.y, self.w * self.scale.x, self.h * self.scale.y)
+    local e = self.entity
+    return Rect.create_centered(e.Transform.x - (self.w / 2 * self.scale.x), e.Transform.y - (self.h / 2 * self.scale.y), self.w * self.scale.x, self.h * self.scale.y)
 end
 
 function Sprite:draw()
+    local e = self.entity
     love.graphics.setColor(self.tintColor)
-    love.graphics.draw(self.atlas, self.quad, self.pos.x , self.pos.y, self.angle, self.scale.x * self.flip.x, self.scale.y * self.flip.y, self.w / 2, self.h / 2)
+    love.graphics.draw(self.atlas, self.quad, e.Transform.x - (self.w / 2 * self.scale.x), e.Transform.y - (self.h / 2 * self.scale.y), e.Transform.angle, self.scale.x * self.flip.x, self.scale.y * self.flip.y, self.w / 2, self.h / 2)
 
     local r = self:rect()
     love.graphics.rectangle("line", r.x,r.y, r.w,r.h)   
