@@ -32,6 +32,13 @@ function V.multiply(v1, mult)
     return V(v1.x * mult, v1.y * mult)
 end
 
+--Returns the dot product of the vector with the specified one
+--note: this number is a scalar
+--
+function V:dot(other)
+    return self.x * other.x + self.y * other.y
+end
+
 function V:mul(val)
     self.x = self.x * val
     self.y = self.y * val
@@ -44,11 +51,17 @@ function V:div(val)
 end
 
 --Modifies the vector in-place to have a magnitude of 1
---
-function V:normalize()
+-- this is commonly referred to as a unit vector
+function V:unit()
     local mag = self:mag()
     self.x = self.x / mag
     self.y = self.y / mag
+end
+
+--Returns a vector that is the normal of this one (perpendicular)
+--
+function V:normal()
+    return V(self.y, -self.x)
 end
 
 --Creates a copy of this Vector2 object

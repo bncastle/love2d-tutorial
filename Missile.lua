@@ -45,11 +45,11 @@ function M:update(dt)
 
     if target_transform ~= nil then
         local missile_to_target = Vector2.sub(target_transform:VectorPos(), self.transform:VectorPos())
-        missile_to_target:normalize()
+        missile_to_target:unit()
         --print(missile_to_target.x .. " " .. missile_to_target.y )
 
         local missile_dir = Vector2( math.cos(self.transform.angle ), math.sin(self.transform.angle))
-        missile_dir:normalize()
+        missile_dir:unit()
 
         -- print("to target: " .. missile_to_target.x .. "," .. missile_to_target.y .. " missile dir: " .. missile_dir.x .. "," .. missile_dir.y )
         local cp = Vector3.cross(missile_dir, missile_to_target)

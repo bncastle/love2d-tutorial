@@ -49,7 +49,7 @@ function U.CircleOverlaps(circle1, circle2)
     local overlaps = d < circle1.r + circle2.r
 
     if overlaps then
-        c1toc2:normalize()
+        c1toc2:unit()
         c1toc2:mul(circle1.r + circle2.r - d)
         return true, c1toc2
     else

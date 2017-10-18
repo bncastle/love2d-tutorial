@@ -8,6 +8,7 @@ local Transform = require("lib.components.Transform")
 
 local Player = require("../Player")
 local Missile = require("../Missile")
+local Sat = require("lib.Sat")
 
 local T = Scene:derive("Test")
 
@@ -84,6 +85,17 @@ function T:draw()
 
     love.graphics.setColor(self.c2.c)
     love.graphics.circle("line", self.c2.x,self.c2.y, self.c2.r)
+
+    local triangle = {100, 100, 200, 100, 150, 305}
+    local rect = {100, 300, 200, 300, 200, 350, 100, 350}
+
+    local msuv, amount = Sat.Collide(Sat.to_Vector2_array(triangle), Sat.to_Vector2_array(rect))
+    if msuv ~= nil then
+        print("min sep unit vector: " .. msuv.x .. "," .. msuv.y .. " sep amount:" .. amount)
+    end
+
+    love.graphics.polygon("line", triangle)
+    love.graphics.polygon("line", rect)
 end
 
 return T
