@@ -45,7 +45,6 @@ function E:add(component, name)
     elseif component.type and type(component.type) == "string" then
         assert(self[component.type] == nil, "This entity already contains a component of name: " .. component.type)
         self[component.type] = component
-        print(component.type)
     end
 
     -- if component.on_added then component:on_added() end

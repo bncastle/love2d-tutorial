@@ -14,11 +14,11 @@ local T = Scene:derive("Test")
 function T:new(scene_mgr) 
     T.super.new(self, scene_mgr)
 
-    self.p = Entity(Transform(100,100, 4, 4), Player())
+    self.p = Entity(Transform(100, 100, 4, 4), Player())
 
     self.em:add(self.p)
 
-    self.e = Entity(Transform(320, 100), Missile())
+    self.e = Entity(Transform(350, 100, 1, 1, 0), Missile())
     self.em:add(self.e)
     
     self.e.Missile:target(self.p.Transform)
