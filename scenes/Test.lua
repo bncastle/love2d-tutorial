@@ -13,13 +13,15 @@ local T = Scene:derive("Test")
 
 function T:new(scene_mgr) 
     T.super.new(self, scene_mgr)
-    self.p = Player()
+
+    self.p = Entity(Transform(100,100, 4, 4), Player())
+
     self.em:add(self.p)
 
-    self.e = Missile(320, 100)
+    self.e = Entity(Transform(320, 100), Missile())
     self.em:add(self.e)
     
-    self.e:target(self.p.Sprite)
+    self.e.Missile:target(self.p.Transform)
 
     self.c1 = {x = 200, y = 200, r= 20, c = U.color(255)}
     self.c2 = {x = 320, y = 200, r= 40, c = U.color(255, 200, 200)}
@@ -45,7 +47,7 @@ function T:update(dt)
         local sep = md:closest_point_on_bounds(Vector2())
 
         --tell the player on which side it has a collision
-        self.p:collided(md:collides_top(sep), md:collides_bottom(sep), md:collides_left(sep), md:collides_right(sep))
+        self.p.Player:collided(md:collides_top(sep), md:collides_bottom(sep), md:collides_left(sep), md:collides_right(sep))
 
         self.p.Transform.x = self.p.Transform.x + sep.x 
         self.p.Transform.y = self.p.Transform.y + sep.y 

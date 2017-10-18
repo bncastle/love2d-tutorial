@@ -3,8 +3,15 @@ local U = require("lib.Utils")
 
 local E = Class:derive("Entity")
 
-function E:new()
+function E:new(...)
     self.components = {}
+    local parms = {...}
+    
+    if #parms > 0 then
+        for i = 1, #parms do
+            self:add(parms[i])
+        end
+    end
 end
 
 --helps us sort our priorities because priorities are important
@@ -38,7 +45,10 @@ function E:add(component, name)
     elseif component.type and type(component.type) == "string" then
         assert(self[component.type] == nil, "This entity already contains a component of name: " .. component.type)
         self[component.type] = component
+        print(component.type)
     end
+
+    -- if component.on_added then component:on_added() end
 
     if self.started and not component.started and component.enabled then
         if component.on_start then component:on_start() end

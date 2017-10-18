@@ -13,4 +13,6 @@ function T:new(x, y, sx, sy, angle)
     self.started = true
 end
 
+function T:VectorPos() return Vector2(self.x, self.y) end
+
 return T

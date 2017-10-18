@@ -22,10 +22,8 @@ function Sprite:new(atlas, w, h, color)
 end
 
 function Sprite:on_start()
-    print("start! " .. self.entity.type)
     assert(self.entity.Transform ~=nil, "Sprite component requires a Transform component to exist in the attached entity!")
     self.tr = self.entity.Transform
-    print("started")
 end
 
 function Sprite:animate(anim_name)
@@ -74,10 +72,6 @@ function Sprite:update(dt)
     end
 end
 
-function Sprite:center()
-    return Vector2(self.tr.x + self.w /2, self.tr.y + self.h / 2)
-end
-
 function Sprite:rect()
     return Rect.create_centered(self.tr.x , self.tr.y, self.w * self.tr.sx, self.h * self.tr.sy)
 end
@@ -95,8 +89,6 @@ function Sprite:poly()
 end
 
 function Sprite:draw()
-    print(self.tr.sx .. " " .. self.tr.sy)
-    
     love.graphics.setColor(self.tintColor)
     love.graphics.draw(self.atlas, self.quad, self.tr.x, self.tr.y, self.tr.angle, self.tr.sx * self.flip.x, self.tr.sy * self.flip.y, self.w / 2, self.h / 2)
 

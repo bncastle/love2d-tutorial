@@ -12,7 +12,7 @@ end
 --
 function V.cross(a, b)
     --NOTE: if both vectors are 2D, then this isnt really a cross product!It is something else.
-    if a[z] == nil and b[z] == nil then
+    if a.z == nil and b.z == nil then
         return V(0, 0, a.x*b.y - a.y*b.x)
     else
         return V(a.y*b.z - a.z*b.y, a.z*b.x - a.x*b.z, a.x*b.y - a.y*b.x)

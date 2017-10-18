@@ -1,4 +1,4 @@
-local Entity = require("lib.Entity")
+local Class = require("lib.Class")
 local Anim = require("lib.Animation")
 
 local Sprite = require("lib.components.Sprite")
@@ -6,7 +6,7 @@ local Transform = require("lib.components.Transform")
 local StateMachine = require("lib.components.StateMachine")
 
 
-local P = Entity:derive("Player")
+local P = Class:derive("Player")
 
 local hero_atlas
 local snd
@@ -18,35 +18,35 @@ local jump = Anim(16, 48, 16, 16, 1, 1, 10, false)
 local swim = Anim(16, 64, 16, 16, 6, 6, 12)
 local punch = Anim(16, 80, 16, 16, 3, 3, 10, false)
 
-local transform
-local sprite
-
 function P:new()
-    P.super.new(self)
-
-    if hero_atlas == nil then
-        hero_atlas = love.graphics.newImage("assets/gfx/hero.png")
-    end
     if snd == nil then
         snd = love.audio.newSource("assets/sfx/hit01.wav", "static")
     end
 
-    --Create/Add components to our entity
-    sprite = Sprite(hero_atlas, 16, 16)
+    self.vx = 0
+    self.machine = StateMachine(self, "idle")
+end
+
+local function create_sprite_component()
+    if hero_atlas == nil then
+        hero_atlas = love.graphics.newImage("assets/gfx/hero.png")
+    end
+
+    --create a sprite component
+    local sprite = Sprite(hero_atlas, 16, 16)
     sprite:add_animations({idle = idle, walk = walk, swim = swim, punch = punch, jump = jump})
     sprite:animate("idle")
-    self.vx = 0
+    return sprite   
+end
 
-    transform = Transform(100,100, 4, 4)
-    self.machine = StateMachine(self, "idle")
-    
-    self:add(transform)
-    self:add(sprite)
-    self:add(self.machine)
+function P:on_start()
+    self.transform = self.entity.Transform
+    self.sprite = create_sprite_component()
+    self.entity:add(self.sprite)
 end
 
 function P:idle_enter(dt)
-    sprite:animate("idle")
+    self.sprite:animate("idle")
 end
 
 function P:idle(dt)
@@ -60,13 +60,13 @@ function P:idle(dt)
 end
 
 function P:punch_enter(dt)
-    sprite:animate("punch")
+    self.sprite:animate("punch")
     love.audio.stop(snd)
     love.audio.play(snd)
 end
 
 function P:punch(dt)
-    if sprite:animation_finished() then
+    if self.sprite:animation_finished() then
         self.machine:change("idle")
     end
 end
@@ -76,7 +76,7 @@ local y_before_jump = nil
 
 function P:jump_enter(dt)
     jumping = true
-    sprite:animate("jump")
+    self.sprite:animate("jump")
 end
 
 function P:jump(dt)
@@ -89,16 +89,16 @@ function P:jump(dt)
 end
 
 function P:walk_enter(dt)
-    sprite:animate("walk")
+    self.sprite:animate("walk")
 end
 
 function P:walk(dt)
 
     if Key:key("right") and not Key:key("left") and vx ~= 1 then
-        sprite:flip_h(false)
+        self.sprite:flip_h(false)
         self.vx = 1    
     elseif Key:key("left") and not Key:key("right") and vx ~= -1 then
-        sprite:flip_h(true)
+        self.sprite:flip_h(true)
         self.vx = -1
     elseif not Key:key("left") and not Key:key("right") then
         self.vx = 0
@@ -115,26 +115,25 @@ end
 local y_vel = 0
 local y_gravity = 1000
 function P:update(dt)
-    P.super.update(self, dt)
-    
-    transform.x = transform.x + self.vx * 115 * dt
+    self.machine:update(dt)
+    self.transform.x = self.transform.x + self.vx * 115 * dt
     
     if Key:key("up") then
-        transform.y = transform.y - 115 * dt
+        self.transform.y = self.transform.y - 115 * dt
     elseif Key:key("down") then
-        transform.y = transform.y + 115 * dt
+        self.transform.y = self.transform.y + 115 * dt
     end
 
     if jumping and y_before_jump == nil then
         y_vel = -400
-        y_before_jump = transform.y
+        y_before_jump = self.transform.y
     elseif jumping then
         y_vel = y_vel + y_gravity * dt
-        transform.y = transform.y + y_vel * dt
+        self.transform.y = self.transform.y + y_vel * dt
 
-        if transform.y >= y_before_jump then
+        if self.transform.y >= y_before_jump then
             jumping = false
-            transform.y = y_before_jump
+            self.transform.y = y_before_jump
             y_before_jump = nil
             self.vx = 0
             self.machine:change("idle")
