@@ -17,6 +17,7 @@ function EM:add(entity)
     --Add additional table entries that we want to exist for all entities
     entity.layer = entity.layer or 1
     entity.started = entity.started or false
+    entity.updated = entity.updated or false
     entity.enabled = (entity.enabled == nil) or entity.enabled
     self.entities[#self.entities + 1] = entity
 
@@ -51,10 +52,11 @@ function EM:update(dt)
 
         if e.enabled then
             if not e.started then
-                e.started = true
                 if e.on_start then e:on_start() end
+                e.started = true
             else--if e.update then
                 e:update(dt)
+                e.updated = true
             end
         end
     end
@@ -62,7 +64,7 @@ end
 
 function EM:draw()
     for i = 1, #self.entities do
-        if self.entities[i].enabled and self.entities[i].draw then
+        if self.entities[i].enabled and self.entities[i].draw and self.entities[i].updated then
             self.entities[i]:draw()
         end
     end

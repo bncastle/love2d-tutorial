@@ -5,11 +5,11 @@ local E = Class:derive("Entity")
 
 function E:new(...)
     self.components = {}
-    local parms = {...}
+    local components_to_add = {...}
     
-    if #parms > 0 then
-        for i = 1, #parms do
-            self:add(parms[i])
+    if #components_to_add > 0 then
+        for i = 1, #components_to_add do
+            self:add(components_to_add[i])
         end
     end
 end
@@ -24,6 +24,7 @@ end
 --Note: name is optional and if it is not used, the component's class type
 --will be used instead
 function E:add(component, name)
+    print("add: " .. component.type)
     if U.contains(self.components, component) then return end
     --Add additional table entries that we want to exist for all components
 
@@ -50,6 +51,7 @@ function E:add(component, name)
     -- if component.on_added then component:on_added() end
 
     if self.started and not component.started and component.enabled then
+        component.started = true
         if component.on_start then component:on_start() end
     end
     
@@ -89,15 +91,9 @@ end
 
 function E:update(dt)
     for i = 1, #self.components do
-        local component = self.components[i]
         --if the component is enabled, then update it
-        if component.enabled then
-            if not component.started then
-                component.started = true
-                if component.on_start then component:on_start() end
-            elseif component.update then
-                component:update(dt)
-            end
+        if self.components[i].enabled and self.components[i].update then
+            self.components[i]:update(dt)
         end
     end
 end

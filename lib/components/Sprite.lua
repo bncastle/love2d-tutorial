@@ -91,14 +91,6 @@ end
 function Sprite:draw()
     love.graphics.setColor(self.tintColor)
     love.graphics.draw(self.atlas, self.quad, self.tr.x, self.tr.y, self.tr.angle, self.tr.sx * self.flip.x, self.tr.sy * self.flip.y, self.w / 2, self.h / 2)
-
-    local r = self:rect()
-
-    love.graphics.setColor({255,64, 128})
-    love.graphics.rectangle("line", r.x,r.y, r.w,r.h)
-
-    love.graphics.setColor({255,255, 255})
-    love.graphics.polygon("line", self:poly())
 end
 
 return Sprite

@@ -20,7 +20,7 @@ function M:new()
     self.vx = 0
 end
 
-local function create_sprite_component()
+function M:create_sprite()
     if missile_atlas == nil then
         missile_atlas = love.graphics.newImage("assets/gfx/missile.png")
     end
@@ -32,7 +32,6 @@ end
 
 function M:on_start()
     self.transform = self.entity.Transform
-    self.entity:add(create_sprite_component())
 end
 
 --Sets the target object

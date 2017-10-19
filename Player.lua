@@ -27,7 +27,7 @@ function P:new()
     self.machine = StateMachine(self, "idle")
 end
 
-local function create_sprite_component()
+function P.create_sprite()
     if hero_atlas == nil then
         hero_atlas = love.graphics.newImage("assets/gfx/hero.png")
     end
@@ -41,8 +41,7 @@ end
 
 function P:on_start()
     self.transform = self.entity.Transform
-    self.sprite = create_sprite_component()
-    self.entity:add(self.sprite)
+    self.sprite = self.entity.Sprite
 end
 
 function P:idle_enter(dt)
