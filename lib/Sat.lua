@@ -19,7 +19,10 @@ local function get_edge_normals(vertices)
         local normal = edge:normal()
         normal:unit()
         
-        edge_normals[#edge_normals + 1] = normal
+        --Check if the edge is valid (i.e. magnitude is > 0)
+        if edge:mag() > 0 then
+            edge_normals[#edge_normals + 1] = normal
+        end
     end
 
     return edge_normals
@@ -83,6 +86,7 @@ function S.Collide(poly1, poly2)
     end
 
     --if we get here then we are colliding
+    assert(min_pentration_axis ~=nil)
     return min_pentration_axis, overlap
 end
 

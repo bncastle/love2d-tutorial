@@ -18,15 +18,18 @@ local T = Scene:derive("Test")
 function T:new(scene_mgr) 
     T.super.new(self, scene_mgr)
 
-    self.p = Entity(Transform(100, 100, 4, 4), Player(), Player.create_sprite(), CC(32),
+    --Player Entitiy
+    self.p = Entity(Transform(100, 100, 4, 4), Player(), Player.create_sprite(),
     PC({Vector2(-8,-8), Vector2(8,-8), Vector2(8,8), Vector2(-8, 8)}))
 
     self.em:add(self.p)
 
+    --Missile Entity
     self.e = Entity(Transform(350, 100, 1, 1, 0), Missile(), Missile.create_sprite(),
     PC({Vector2(-62,-40), Vector2(62,-40), Vector2(62,40), Vector2(-62, 40)}))
     self.em:add(self.e)
     
+    --Set the missile's target to the player
     self.e.Missile:target(self.p.Transform)
 end
 
@@ -37,26 +40,11 @@ function T:update(dt)
         love.event.quit()
     end
 
-    local r1 = self.p.Sprite:rect()
-    local r2 = self.e.Sprite:rect()
-    if U.AABBColl(r1, r2) then
-        self.p.Sprite.tintColor = U.color(0,128,128,200)
-
-        local md = r2:minkowski_diff(r1)
-
-        --This will give us our separation vector
-        -- x > 0 = Left side collision, x < 0 = right side collision
-        -- y > 0 = Top side collision, y < 0 = bottom collision
-        local sep = md:closest_point_on_bounds(Vector2())
-
-        --tell the player on which side it has a collision
-        self.p.Player:collided(md:collides_top(sep), md:collides_bottom(sep), md:collides_left(sep), md:collides_right(sep))
-
-        self.p.Transform.x = self.p.Transform.x + sep.x 
-        self.p.Transform.y = self.p.Transform.y + sep.y 
-        
-    else
-        self.p.Sprite.tintColor = U.color(255)
+    local msuv, amount = Sat.Collide(self.p.PolygonCollider.world_vertices, self.e.PolygonCollider.world_vertices)
+    if msuv ~= nil then
+        --  print("min sep unit vector: " .. msuv.x .. "," .. msuv.y .. " sep amount:" .. amount)
+         self.p.Transform.x = self.p.Transform.x + msuv.x * amount
+         self.p.Transform.y = self.p.Transform.y + msuv.y * amount
     end
 
 end

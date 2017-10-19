@@ -7,7 +7,6 @@ local PC = Class:derive("PolygonCollider")
 --These vertices should be centered around the origin
 function PC:new(vertices)
     self.vertices = vertices
-    print(#vertices)
     --Scaled and translated vertices (we use these for collision detection)
     self.world_vertices = {}
     self.draw_points = {}
@@ -23,9 +22,10 @@ end
 function PC:on_start()
     assert(self.entity.Transform ~=nil, "PolygonCollider component requires a Transform component to exist in the attached entity!")
     self.tr = self.entity.Transform
+    self:scale_translate()
 end
 
-function PC:update(dt)
+function PC:scale_translate()
     --update the polygon's rotation/scale
     for i = 1, #self.vertices do
         self.world_vertices[i].x = self.vertices[i].x * self.tr.sx
@@ -35,6 +35,10 @@ function PC:update(dt)
         self.draw_points[1 + 2*(i - 1)] = self.world_vertices[i].x
         self.draw_points[1 + 2*(i - 1) + 1] = self.world_vertices[i].y
     end
+end
+
+function PC:update(dt)
+    self:scale_translate()
 end
 
 function PC:draw()
