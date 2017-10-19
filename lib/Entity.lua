@@ -24,7 +24,6 @@ end
 --Note: name is optional and if it is not used, the component's class type
 --will be used instead
 function E:add(component, name)
-    print("add: " .. component.type)
     if U.contains(self.components, component) then return end
     --Add additional table entries that we want to exist for all components
 

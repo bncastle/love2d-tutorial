@@ -64,6 +64,18 @@ function V:normal()
     return V(self.y, -self.x)
 end
 
+--
+--Rotates the Vector2 about the origin the given angle
+--Note: the last 2 parameters are optional and allow you to
+--add an offset to the results AFTER they have been rotated
+--Note: Modifies the object in-place
+function V:rotate(angle, xoffset, yoffset)
+    local nx = math.cos(angle) * self.x - math.sin(angle) * self.y + (xoffset or 0)
+    local ny = math.sin(angle) * self.x + math.cos(angle) * self.y + (yoffset or 0)
+    self.x = nx
+    self.y = ny
+end
+
 --Creates a copy of this Vector2 object
 --
 function V:copy()

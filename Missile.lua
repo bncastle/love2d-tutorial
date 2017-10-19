@@ -20,7 +20,7 @@ function M:new()
     self.vx = 0
 end
 
-function M:create_sprite()
+function M.create_sprite()
     if missile_atlas == nil then
         missile_atlas = love.graphics.newImage("assets/gfx/missile.png")
     end

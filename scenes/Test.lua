@@ -7,6 +7,7 @@ local Entity = require("lib.Entity")
 local Transform = require("lib.components.Transform")
 
 local CC = require("lib.components.physics.CircleCollider")
+local PC = require("lib.components.physics.PolygonCollider")
 
 local Player = require("../Player")
 local Missile = require("../Missile")
@@ -17,11 +18,13 @@ local T = Scene:derive("Test")
 function T:new(scene_mgr) 
     T.super.new(self, scene_mgr)
 
-    self.p = Entity(Transform(100, 100, 4, 4), Player(), Player.create_sprite(), CC(32))
+    self.p = Entity(Transform(100, 100, 4, 4), Player(), Player.create_sprite(), CC(32),
+    PC({Vector2(-8,-8), Vector2(8,-8), Vector2(8,8), Vector2(-8, 8)}))
 
     self.em:add(self.p)
 
-    self.e = Entity(Transform(350, 100, 1, 1, 0), Missile(), Missile.create_sprite())
+    self.e = Entity(Transform(350, 100, 1, 1, 0), Missile(), Missile.create_sprite(),
+    PC({Vector2(-62,-40), Vector2(62,-40), Vector2(62,40), Vector2(-62, 40)}))
     self.em:add(self.e)
     
     self.e.Missile:target(self.p.Transform)
@@ -33,7 +36,7 @@ function T:update(dt)
     if Key:key_down("escape") then
         love.event.quit()
     end
-    
+
     local r1 = self.p.Sprite:rect()
     local r2 = self.e.Sprite:rect()
     if U.AABBColl(r1, r2) then
