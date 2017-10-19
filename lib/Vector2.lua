@@ -42,12 +42,14 @@ end
 function V:mul(val)
     self.x = self.x * val
     self.y = self.y * val
+    return self    
 end
 
 function V:div(val)
     assert(val ~= 0, "Error val must not be 0!")
     self.x = self.x / val
     self.y = self.y / val
+    return self    
 end
 
 --Modifies the vector in-place to have a magnitude of 1
@@ -56,6 +58,7 @@ function V:unit()
     local mag = self:mag()
     self.x = self.x / mag
     self.y = self.y / mag
+    return self    
 end
 
 --Returns a vector that is the normal of this one (perpendicular)

@@ -2,6 +2,13 @@ local Vector2 = require("lib.Vector2")
 
 local S = {}
 
+local function contains_axis(edges, unit_normal)
+    for i = 1, #edges do
+        if math.abs(unit_normal:dot(edges[i])) == 1 then return true end
+    end
+    return false
+end
+
 --Retrieves all the edge normals from a polygon
 -- given a list of Vector2 points that make up the polygon
 --
@@ -16,15 +23,14 @@ local function get_edge_normals(vertices)
         --subtract these 2 to get the edge vector
         local edge = Vector2.sub(p1,p2)
         --Get the edge normal
-        local normal = edge:normal()
-        normal:unit()
+        local normal = edge:normal():unit()
         
         --Check if the edge is valid (i.e. magnitude is > 0)
-        if edge:mag() > 0 then
+        if edge:mag() > 0 and not contains_axis(edge_normals, normal) then
             edge_normals[#edge_normals + 1] = normal
         end
     end
-
+    
     return edge_normals
 end
 
@@ -63,7 +69,7 @@ function S.Collide(poly1, poly2)
     local axes = get_edge_normals(poly1)
     local axes2 = get_edge_normals(poly2)
     local min_pentration_axis = nil
-    local overlap = 9999999999
+    local overlap = 0xEFFFFFFF
     --concatenate axes2 into axes
     for i =1, #axes2 do axes[#axes + 1] = axes2[i] end
 

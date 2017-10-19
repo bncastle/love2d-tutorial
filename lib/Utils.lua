@@ -118,4 +118,16 @@ function U.rotate_point(x, y, angle, post_rotate_x_offset, post_rotate_y_offset)
     return xrot, yrot
 end
 
+--exclusive or function where a and b are booleans
+--
+function U.xor(a,b)
+    return a ~= b
+end
+
+--returns true if a and b have the same sign
+--
+function U.same_sign(a,b)
+    return U.xor(a >= 0, b < 0 )
+end
+
 return U
