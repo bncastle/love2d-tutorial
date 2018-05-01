@@ -56,7 +56,7 @@ function T:update(dt)
 end
 
 function T:draw()
-    love.graphics.clear(64,64,255)
+    love.graphics.clear(0.25,0.25,1)
     self.super.draw(self)
 
     -- local triangle = {100, 100, 200, 100, 150, 305}

@@ -18,10 +18,10 @@ function Checkbox:new(x, y, w, h, text)
     self.checked = false
 
     --Text Colors
-    self.normal = U.gray(128, 255)
-    self.highlight = U.gray(200, 255)
-    self.pressed = U.gray(255, 255)
-    self.disabled = U.gray(128, 128)
+    self.normal = U.gray(0.5, 1)
+    self.highlight = U.gray(0.78, 1)
+    self.pressed = U.gray(1, 1)
+    self.disabled = U.gray(0.5, 0.5)
 
     self.color = self.normal
     self.prev_left_click = false

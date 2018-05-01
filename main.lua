@@ -24,7 +24,7 @@ function love.load()
     gpm.event:hook('controller_removed', on_controller_removed)
     
     sm = SM("scenes", {"MainMenu", "Test", "TweenTest"})
-    -- sm:switch("MainMenu")
+    --sm:switch("MainMenu")
     sm:switch("Test")
     -- sm:switch("TweenTest")
 end

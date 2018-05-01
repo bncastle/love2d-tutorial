@@ -18,7 +18,7 @@ function Sprite:new(atlas, w, h, color)
     self.animations = {}
     self.current_anim = ""
     self.quad = love.graphics.newQuad(0,0, w, h, atlas:getDimensions())
-    self.tintColor = color or {255,255,255,255}
+    self.tintColor = color or {1,1,1,1}
 end
 
 function Sprite:on_start()

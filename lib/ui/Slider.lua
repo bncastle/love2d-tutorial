@@ -24,12 +24,12 @@ function Slider:new(x, y, w, h, id, is_vertical)
     self.value = 0
     
     --Slider Colors
-    self.normal = U.color(128, 32, 32, 192)
-    self.highlight = U.color(192, 32, 32, 255)
-    self.pressed = U.color(255, 32, 32, 255)
-    self.disabled = U.gray(128, 128)
-    
-    self.groove_color = U.gray(128)
+    self.normal = U.color(0.5, 0.125, 0.125, 0.75)
+    self.highlight = U.color(0.75, 0.125, 0.125, 1)
+    self.pressed = U.color(1, 0.125, 0.125, 1)
+    self.disabled = U.gray(0.5, 0.5)
+
+    self.groove_color = U.gray(0.5)
     self.color = self.normal
     self.interactible = true
 end

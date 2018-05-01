@@ -11,8 +11,8 @@ local cursor = '|'
 function TextField:new(x, y, w, h, text, color, align)
     TextField.super.new(self, x, y, w, h, text, color, align)
     self.focus = false
-    self.focused_color = U.color(128)
-    self.unfocused_color = U.color(32)
+    self.focused_color = U.color(0.5)
+    self.unfocused_color = U.color(0.125)
     self.back_color = self.unfocused_color
     
     --TODO: Add capability to limit # of characters allowed in the input field

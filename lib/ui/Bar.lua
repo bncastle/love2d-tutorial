@@ -16,9 +16,9 @@ function B:new(id, x, y, w, h, text)
     self.filled_value = self.w - border_thickness
 
     --Text colors
-    self.text_color = U.color(255)
-    self.fill_color = U.color(255,0,0, 255)
-    self.outline_color = U.color(255)
+    self.text_color = U.color(1)
+    self.fill_color = U.color(1,0,0, 1)
+    self.outline_color = U.color(1)
 end
 
 --A value between 0 and 100
