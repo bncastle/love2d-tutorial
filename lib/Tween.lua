@@ -64,33 +64,46 @@ function T.create(target, prop_name, to, duration, ease_function)
     assert(type(prop_name) == "string", "prop_name parameter must be a string!")
 
     -- 
-    local t = 0
-    local from = target[prop_name]
-    local diff = to - from
-
-    local update = function(dt)
-        if t >= duration then
-            target[prop_name] = to
-            return true
+    local tween = {
+        t = 0,
+        from = target[prop_name],
+        diff = to - target[prop_name],
+        to = to,
+        duration = duration,
+        target = target,
+        update = function(self, dt)
+            if self.stop_tween then return false end
+            if self.t >= self.duration then
+                    self.target[prop_name] = to
+                return false
+            end
+    
+            --tween the property here
+            self.target[prop_name] = self.from + self.diff * ease_function(self.t / self.duration)
+    
+            self.t = self.t + dt
+            return true            
+        end,
+        cancel = function(self, should_complete)
+            self.stop_tween = true
+            if should_complete then
+                self.target[prop_name] = self.to
+            end
         end
-
-        --tween the property here
-        target[prop_name] = from + diff * ease_function(t / duration)
-
-        t = t + dt
-        return false
-    end
+    }
     
     --add tween to active
-    active_tweens[#active_tweens + 1] = update
-    --TODO: maybe return something so we can stop or complete the tween early
+    active_tweens[#active_tweens + 1] = tween
+    --return the new tween table
+    return tween
 end
 
 function T.update(dt)
     for i=#active_tweens, 1, -1 do
-        if active_tweens[i](dt) then
-            --toto: if the tween has a completion function, then call it
+        if not active_tweens[i]:update(dt) then
+            local t = active_tweens[i]
             table.remove(active_tweens, i)
+            if(t.on_complete) then t:on_complete() end
         end
     end
 end
